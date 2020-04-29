@@ -1,8 +1,8 @@
 <div class="c-socialwall">
 	<f:for each="{feed}" as="image">
 		<div class="c-socialwall__item c-socialwall__item--instagram">
-			<f:link.external uri="https://www.instagram.com/{settings.profileId}/" title="Instagram profile {settings.profileId}">
-				<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="250" />
+			<f:link.external uri="https://www.instagram.com/{settings.profileId}/" title="Instagram profile {settings.profileId}" target="_blank" rel="noopener">
+				<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="250" height="250" />
 				<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
 			</f:link.external>
 		</div>
