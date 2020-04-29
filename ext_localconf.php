@@ -13,6 +13,9 @@ call_user_func(
             'Pi1',
             [
                 'Profile' => 'show'
+            ],
+            [
+                'Profile' => 'show'
             ]
         );
 
