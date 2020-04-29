@@ -22,7 +22,9 @@ class ProfileController extends ActionController
     {
         $instagramRepository = GeneralUtility::makeInstance(InstagramRepository::class);
         $configuration = $instagramRepository->findByProfileId($this->settings['profileId']);
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($configuration, 'in2code ' . __CLASS__ . ':' . __LINE__);
-        die(__CLASS__ . ':' . __LINE__);
+        $this->view->assignMultiple([
+            'data' => $this->configurationManager->getContentObject()->data,
+            'feed' => $configuration
+        ]);
     }
 }
