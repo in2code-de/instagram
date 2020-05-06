@@ -4,7 +4,6 @@ namespace In2code\Instagram\Domain\Service;
 
 use In2code\Instagram\Exception\FetchCouldNotBeResolvedException;
 use In2code\Instagram\Exception\HtmlCouldNotBeFetchedException;
-use In2code\Instagram\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -14,89 +13,72 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FetchProfile
 {
     /**
-     * @param string $profileId
-     * @return array
+     * @var string
+     */
+    protected $feedUri = 'https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={%%22id%%22:%%22%d%%22,%%22first%%22:50}';
+
+    /**
+     * @var string
+     */
+    protected $profileUri = 'https://www.instagram.com/%s/?__a=1';
+
+    /**
+     * @var RequestFactory
+     */
+    protected $requestFactory;
+
+    public function __construct(RequestFactory $requestFactory = null)
+    {
+        $this->requestFactory = $requestFactory ?: GeneralUtility::makeInstance(RequestFactory::class);
+    }
+
+    /**
+     * @param string $username
      * @throws FetchCouldNotBeResolvedException
      * @throws HtmlCouldNotBeFetchedException
+     * @return array
      */
-    public function getConfiguration(string $profileId): array
+    public function getConfiguration(string $username): array
     {
-        $configuration = $this->fetchFromInstagram($profileId);
-        if (empty($configuration['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges'])) {
+        $configuration = $this->fetchFromInstagram($username);
+        if (empty($configuration['data']['user']['edge_owner_to_timeline_media']['edges'])) {
             throw new FetchCouldNotBeResolvedException(
                 'Json array structure changed? Could not get value edge_owner_to_timeline_media',
                 1588171346
             );
         }
-        return $configuration['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges'];
+
+        return $configuration['data']['user']['edge_owner_to_timeline_media']['edges'];
     }
 
     /**
-     * @param string $profileId
-     * @return array
+     * @param string $username
      * @throws FetchCouldNotBeResolvedException
      * @throws HtmlCouldNotBeFetchedException
+     * @return array
      */
-    protected function fetchFromInstagram(string $profileId): array
+    protected function fetchFromInstagram(string $username): array
     {
-        $html = $this->getHtmlFromInstagramProfile($profileId);
-        preg_match_all('~<script[^>]*>window._sharedData\s+=\s+(.+)<\/script>~U', $html, $result);
-        if (empty($result[1][0]) === false || is_string($result[1][0]) === true) {
-            $json = rtrim($result[1][0], ';');
-            if (ArrayUtility::isJsonArray($json) === false) {
-                throw new HtmlCouldNotBeFetchedException(
-                    'Could not find a script tag with window._sharedData in HTML from instagram',
-                    1588169250
-                );
-            }
-            $configuration = json_decode($json, true);
-        } else {
-            throw new HtmlCouldNotBeFetchedException(
-                'Could not find a script tag with window._sharedData in HTML from instagram',
-                1588168267
+        $profileUri = sprintf($this->profileUri, $username);
+        $request = $this->requestFactory->request($profileUri);
+        if ($request->getStatusCode() !== 200) {
+            throw new FetchCouldNotBeResolvedException(
+                'Could not fetch profile for "' . $username . '" on "' . $profileUri . '"',
+                1588777142
             );
         }
-        return $configuration;
-    }
 
-    /**
-     * @param string $profileId
-     * @return string
-     * @throws FetchCouldNotBeResolvedException
-     */
-    public function getHtmlFromInstagramProfile(string $profileId): string
-    {
-        $result = '';
-        try {
-            $additionalOptions = [
-                'headers' => ['Cache-Control' => 'no-cache'],
-                'allow_redirects' => false,
-                'cookies' => false,
-            ];
-            $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
-            $response = $requestFactory->request($this->getUrl($profileId), 'GET', $additionalOptions);
-            if ($response->getStatusCode() === 200) {
-                if (strpos($response->getHeaderLine('Content-Type'), 'text/html') === 0) {
-                    $result = $response->getBody()->getContents();
-                }
-            } else {
-                throw new FetchCouldNotBeResolvedException(
-                    'Wrong statuscode while trying to fetch url ' . $this->getUrl($profileId),
-                    1588165689
-                );
-            }
-        } catch (\Exception $exception) {
-            throw new FetchCouldNotBeResolvedException($exception->getMessage(), 1588165732);
+        $profile = json_decode($request->getBody()->getContents(), true);
+
+        $feedUri = sprintf($this->feedUri, $profile['graphql']['user']['id']);
+        $request = $this->requestFactory->request($feedUri);
+        if ($request->getStatusCode() !== 200) {
+            throw new FetchCouldNotBeResolvedException(
+                'Could not fetch feed for "' . $username . '" on "' . $feedUri . '"',
+                1588777238
+            );
         }
-        return $result;
-    }
 
-    /**
-     * @param string $profileId
-     * @return string
-     */
-    protected function getUrl(string $profileId): string
-    {
-        return 'https://www.instagram.com/' . $profileId . '/';
+        return json_decode($request->getBody()->getContents(), true);
     }
 }
