@@ -48,5 +48,6 @@ plugin {
 
 | Version    | Date       | State      | Description      |
 | ---------- | ---------- | ---------- | ---------------- |
+| 2.0.0      | 2020-05-08 | Task       | Store images locally now to improve privacy of your visitors. Use content element uid for building individual caches now |
 | 1.1.0      | 2020-04-29 | Task       | Open links in new tabs, don't cache the view because of own caching framework usage  |
 | 1.0.0      | 2020-04-29 | Task       | Initial release  |
