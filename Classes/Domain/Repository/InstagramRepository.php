@@ -35,7 +35,6 @@ class InstagramRepository
 
     /**
      * InstagramRepository constructor.
-     * @throws NoSuchCacheException
      */
     public function __construct()
     {
@@ -45,15 +44,13 @@ class InstagramRepository
     /**
      * @param string $profileId
      * @return array
-     * @throws FetchCouldNotBeResolvedException
-     * @throws HtmlCouldNotBeFetchedException
      */
     public function findByProfileId(string $profileId): array
     {
         $configuration = $this->getConfigurationFromCache();
         if ($configuration === []) {
             $fetchProfile = GeneralUtility::makeInstance(FetchProfile::class);
-            $configuration = $fetchProfile->getConfiguration($profileId);
+            $configuration = $fetchProfile->fetch($profileId);
             $this->cacheConfiguration($configuration);
         }
         return $configuration;

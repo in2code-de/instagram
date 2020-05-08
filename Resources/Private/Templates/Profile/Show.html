@@ -1,10 +1,25 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:instagram="http://typo3.org/ns/In2code/Instagram/ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
 <div class="c-socialwall">
 	<f:for each="{feed}" as="image">
 		<div class="c-socialwall__item c-socialwall__item--instagram">
 			<f:link.external uri="https://www.instagram.com/{settings.profileId}/" title="Instagram profile {settings.profileId}" target="_blank" rel="noopener">
-				<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="250" height="250" />
+
+				<instagram:isLocalImageExisting node="{image.node}">
+					<f:then>
+						<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="250c" height="250c" />
+					</f:then>
+					<f:else>
+						<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="250" height="250" />
+					</f:else>
+				</instagram:isLocalImageExisting>
+
 				<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
 			</f:link.external>
 		</div>
 	</f:for>
 </div>
+
+</html>
