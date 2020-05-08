@@ -3,13 +3,10 @@ declare(strict_types=1);
 namespace In2code\Instagram\Domain\Repository;
 
 use In2code\Instagram\Domain\Service\FetchProfile;
-use In2code\Instagram\Exception\FetchCouldNotBeResolvedException;
-use In2code\Instagram\Exception\HtmlCouldNotBeFetchedException;
-use In2code\Instagram\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class InstagramRepository
@@ -34,10 +31,17 @@ class InstagramRepository
     protected $cacheInstance = null;
 
     /**
-     * InstagramRepository constructor.
+     * @var ContentObjectRenderer
      */
-    public function __construct()
+    protected $contentObject = null;
+
+    /**
+     * InstagramRepository constructor.
+     * @param ContentObjectRenderer $contentObject
+     */
+    public function __construct(ContentObjectRenderer $contentObject)
     {
+        $this->contentObject = $contentObject;
         $this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache($this->cacheKey);
     }
 
@@ -90,6 +94,6 @@ class InstagramRepository
      */
     protected function getCacheIdentifier(): string
     {
-        return md5(FrontendUtility::getCurrentPageIdentifier() . $this->cacheKey);
+        return md5($this->contentObject->data['uid'] . $this->cacheKey);
     }
 }
