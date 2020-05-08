@@ -9,10 +9,10 @@
 
 				<instagram:isLocalImageExisting node="{image.node}">
 					<f:then>
-						<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="250c" height="250c" />
+						<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
 					</f:then>
 					<f:else>
-						<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="250" height="250" />
+						<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
 					</f:else>
 				</instagram:isLocalImageExisting>
 
