@@ -6,21 +6,21 @@
 		<main>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>Lux</sheetTitle>
+					<sheetTitle>Instagram</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<settings.profileId>
+					<settings.url>
 						<TCEforms>
 							<exclude>1</exclude>
-							<label>Instagram profile id</label>
+							<label>RSS URL</label>
 							<config>
 								<type>input</type>
-								<default>in2code.de</default>
+								<default>https://rss.app/feeds/CizuljZUv53Wxfha.xml</default>
 								<eval>trim,required</eval>
 							</config>
 						</TCEforms>
-					</settings.profileId>
+					</settings.url>
 				</el>
 			</ROOT>
 		</main>

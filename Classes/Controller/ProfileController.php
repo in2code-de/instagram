@@ -18,10 +18,10 @@ class ProfileController extends ActionController
     public function showAction()
     {
         $instagramRepository = GeneralUtility::makeInstance(InstagramRepository::class, $this->getContentObject());
-        $configuration = $instagramRepository->findByProfileId($this->settings['profileId']);
+        $rssFeed = $instagramRepository->findByRssUrl($this->settings['url']);
         $this->view->assignMultiple([
             'data' => $this->getContentObject()->data,
-            'feed' => $configuration
+            'feed' => $rssFeed
         ]);
     }
 

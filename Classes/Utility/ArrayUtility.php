@@ -8,14 +8,30 @@ namespace In2code\Instagram\Utility;
 class ArrayUtility
 {
     /**
-     * @param string $string
-     * @return bool
+     * @param \SimpleXMLElement $rss
+     * @return array
      */
-    public static function isJsonArray(string $string): bool
+    public static function convertRssXmlToArray(\SimpleXMLElement $rss): array
     {
-        if (empty($string)) {
-            return false;
+        return self::simpleXml2ArrayWithCdataSupport($rss);
+    }
+
+    /**
+     * @param \SimpleXMLElement|array $xml
+     * @return array|string
+     */
+    protected static function simpleXml2ArrayWithCdataSupport($xml)
+    {
+        $array = (array)$xml;
+        if (count($array) === 0) {
+            return (string)$xml;
         }
-        return is_array(json_decode($string, true));
+        foreach ($array as $key => $value) {
+            if (is_iterable($value) === false) {
+                continue;
+            }
+            $array[$key] = self::simpleXml2ArrayWithCdataSupport($value);
+        }
+        return $array;
     }
 }

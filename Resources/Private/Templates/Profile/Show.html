@@ -3,16 +3,16 @@
 	  data-namespace-typo3-fluid="true">
 
 <div class="c-socialwall">
-	<f:for each="{feed}" as="image">
+	<f:for each="{feed.channel.item}" as="item">
 		<div class="c-socialwall__item c-socialwall__item--instagram">
-			<f:link.external uri="https://www.instagram.com/{settings.profileId}/" title="Instagram profile {settings.profileId}" target="_blank" rel="noopener">
+			<f:link.external uri="{item.link}" title="{feed.channel.title}" target="_blank" rel="noopener">
 
-				<instagram:isLocalImageExisting node="{image.node}">
+				<instagram:isLocalImageExisting item="{item}">
 					<f:then>
-						<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
+						<f:image src="/typo3temp/assets/tx_instagram/{item.guid}.jpg" alt="{item.title}" title="{item.title}" width="500c" height="500c" />
 					</f:then>
 					<f:else>
-						<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
+						<img src="{item.imageurl}" alt="{item.title}" title="{item.title}" width="500" height="500" />
 					</f:else>
 				</instagram:isLocalImageExisting>
 
