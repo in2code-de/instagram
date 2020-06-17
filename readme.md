@@ -1,5 +1,10 @@
 # Instagram feed from a profile in TYPO3
 
+## NOTE
+
+I would not recommend to use rss.app because they disguise that building rss-feeds from instagram are not for free. 
+After a small test-period suddenly a confirmation to a payed service is popping up.
+So at the moment I have no idea for a robust and free instagram feed without usage of the annoying facebook API :(
 
 ## Introduction
 
