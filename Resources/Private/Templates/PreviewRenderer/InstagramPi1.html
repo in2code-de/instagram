@@ -1,35 +1,39 @@
 {namespace instagram=In2code\Instagram\ViewHelpers}
 
-<style>
-	.backend-preview-instagram-plugin1 {
-		overflow: hidden;
-	}
-	.backend-preview-instagram-plugin1 [class*='col-'] {
-		padding: 0;
-	}
-</style>
-
-
 <instagram:backend.catch>
 	<instagram:backend.editLink identifier="{data.uid}">
 		<div class="backend-preview-instagram-plugin1">
-			<strong>Instagram Feed <f:if condition="{flexForm.settings.username}">(User {flexForm.settings.username})</f:if></strong>
+			<p>
+				<strong>Instagram Feed <f:if condition="{flexForm.settings.username}">(User {flexForm.settings.username})</f:if></strong>
+			</p>
 
-			<div class="row">
-				<f:for each="{instagram:backend.getFeeds(flexForm:flexForm)}" as="image" iteration="iteration">
-					<f:if condition="{iteration.cycle} < 7">
-						<div class="col-md-2">
-							<instagram:isLocalImageExisting node="{image.node}">
-								<f:then>
-									<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
-								</f:then>
-								<f:else>
-									<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
-								</f:else>
-							</instagram:isLocalImageExisting>
-						</div>
+			<div class="row row-no-gutters">
+				<f:alias map="{images:'{instagram:backend.getFeeds(flexForm:flexForm)}'}">
+					<f:if condition="{images -> f:count()} > 0">
+						<f:then>
+							<f:for each="{images}" as="image" iteration="iteration">
+								<f:if condition="{iteration.cycle} < 7">
+									<div class="col-md-2">
+										<instagram:isLocalImageExisting node="{image.node}">
+											<f:then>
+												<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
+											</f:then>
+											<f:else>
+												<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
+											</f:else>
+										</instagram:isLocalImageExisting>
+									</div>
+								</f:if>
+							</f:for>
+						</f:then>
+						<f:else>
+							<div class="alert alert-danger" role="alert">
+								<p>No feeds found in database. Please use scheduler to import feeds first. See documentation for more details.</p>
+							</div>
+						</f:else>
 					</f:if>
-				</f:for>
+
+				</f:alias>
 			</div>
 		</div>
 	</instagram:backend.editLink>
