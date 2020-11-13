@@ -1,38 +1,16 @@
 # Instagram feed from a profile in TYPO3
 
-## NOTE
-
-I would not recommend to use rss.app because they disguise that building rss-feeds from instagram are not for free. 
-After a small test-period suddenly a confirmation to a payed service is popping up.
-So at the moment I have no idea for a robust and free instagram feed without usage of the annoying facebook API :(
-
 ## Introduction
 
-Because of the annoying Instagram API we searched for a simple way to show instagram feed images without using any 
-facebook API.
-
-Since version 3 any rss feed can be used to import instagram images and text from the feed. Images are stored locally
-for best privacy for your visitors.
-
-## What's new in 3.0
-
-In former versions we were inspired from the JavaScript plugin https://github.com/jsanahuja/InstagramFeed and there 
-functionality. So we build a similar function with PHP and the caching framework.
-Even if we used only one access per day to instagram.com, instagram was blocking the server requests after about one
-month.
-So now we have to think different: 
-* How to get the feed without facebook API
-* Without costs
-* With privacy
-
-We decided to use a free RSS-Feed (https://rss.app) to get the instagram images.
+BBecause of the annoying Instagram API we searched for a simple way to show feed images without using any API. 
+Inspired from the JavaScript plugin https://github.com/jsanahuja/InstagramFeed and there functionality we build 
+the same with PHP.
 
 
 ## Explanation
 
-Very simple plugin where you can only add your rss url and that's it. 
-Feed is cached for 24h via TYPO3 caching framework. A fluid template can be used to change the
-html markup.
+An extension that is splitted into two parts. A scheduler where you can import an instagram feed into the database on
+the one hand. On the other hand there is a plugin where you can show the feed on your page.
 
 
 ## Installation
@@ -42,12 +20,15 @@ html markup.
 
 ## Configuration
 
-### RSS feed generation
+### Scheduler
 
-Create a RSS-feed with your instagram images. We would recommend to use the free service https://rss.app with only a
-few clicks (see example RSS https://rss.app/feeds/CizuljZUv53Wxfha.xml).
+Add a new scheduler task of type `Execute console commands (scheduler)` and select `instagram:importfeed`. Now you can
+add a frequency (e.g. `0 0 */2 * *` for 48h), a instagram username and a limit.
 
-Add this url to your FlexForm configuration
+Note: If the frequency is too high, the risk that instagram will block your server for a time is relative high. At the
+moment I would not recommend less then once a day.
+
+![Scheduler task](Documentation/Images/scheduler.png "Scheduler task")
 
 ### HTML output modification
 
@@ -74,23 +55,27 @@ Example html:
 	  data-namespace-typo3-fluid="true">
 
 <div class="c-socialwall">
-	<f:for each="{feed.channel.item}" as="item">
-		<div class="c-socialwall__item c-socialwall__item--instagram">
-			<f:link.external uri="{item.link}" title="{feed.channel.title}" target="_blank" rel="noopener">
+	<div class="c-socialwall">
+		<f:for each="{feed}" as="image" iteration="iteration">
+			<f:if condition="{iteration.cycle} <= {settings.limit}">
+				<div class="c-socialwall__item c-socialwall__item--instagram">
+					<f:link.external uri="https://www.instagram.com/{settings.username}/" title="Instagram profile {settings.username}" target="_blank" rel="noopener">
 
-				<instagram:isLocalImageExisting item="{item}">
-					<f:then>
-						<f:image src="/typo3temp/assets/tx_instagram/{item.guid}.jpg" alt="{item.title}" title="{item.title}" width="500c" height="500c" />
-					</f:then>
-					<f:else>
-						<img src="{item.imageurl}" alt="{item.title}" title="{item.title}" width="500" height="500" />
-					</f:else>
-				</instagram:isLocalImageExisting>
+						<instagram:isLocalImageExisting node="{image.node}">
+							<f:then>
+								<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
+							</f:then>
+							<f:else>
+								<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
+							</f:else>
+						</instagram:isLocalImageExisting>
 
-				<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
-			</f:link.external>
-		</div>
-	</f:for>
+						<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
+					</f:link.external>
+				</div>
+			</f:if>
+		</f:for>
+	</div>
 </div>
 
 </html>
