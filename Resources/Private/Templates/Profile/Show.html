@@ -4,22 +4,24 @@
 
 <div class="c-socialwall">
 	<div class="c-socialwall">
-		<f:for each="{feed}" as="image">
-			<div class="c-socialwall__item c-socialwall__item--instagram">
-				<f:link.external uri="https://www.instagram.com/{settings.profileId}/" title="Instagram profile {settings.profileId}" target="_blank" rel="noopener">
+		<f:for each="{feed}" as="image" iteration="iteration">
+			<f:if condition="{iteration.cycle} <= {settings.limit}">
+				<div class="c-socialwall__item c-socialwall__item--instagram">
+					<f:link.external uri="https://www.instagram.com/{settings.username}/" title="Instagram profile {settings.username}" target="_blank" rel="noopener">
 
-					<instagram:isLocalImageExisting node="{image.node}">
-						<f:then>
-							<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
-						</f:then>
-						<f:else>
-							<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
-						</f:else>
-					</instagram:isLocalImageExisting>
+						<instagram:isLocalImageExisting node="{image.node}">
+							<f:then>
+								<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
+							</f:then>
+							<f:else>
+								<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
+							</f:else>
+						</instagram:isLocalImageExisting>
 
-					<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
-				</f:link.external>
-			</div>
+						<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
+					</f:link.external>
+				</div>
+			</f:if>
 		</f:for>
 	</div>
 </div>
