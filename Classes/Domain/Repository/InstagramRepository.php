@@ -2,93 +2,65 @@
 declare(strict_types=1);
 namespace In2code\Instagram\Domain\Repository;
 
-use In2code\Instagram\Domain\Service\FetchRss;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use In2code\Instagram\Utility\DatabaseUtility;
 
 /**
  * Class InstagramRepository
  */
 class InstagramRepository
 {
-    /**
-     * @var string
-     */
-    protected $cacheKey = 'instagram';
+    const TABLE_NAME = 'tx_instagram_feed';
 
     /**
-     * Default cache live time is 24h
-     *
-     * @var int
-     */
-    protected $cacheLifeTime = 86400;
-
-    /**
-     * @var FrontendInterface
-     */
-    protected $cacheInstance = null;
-
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $contentObject = null;
-
-    /**
-     * InstagramRepository constructor.
-     * @param ContentObjectRenderer $contentObject
-     */
-    public function __construct(ContentObjectRenderer $contentObject)
-    {
-        $this->contentObject = $contentObject;
-        $this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache($this->cacheKey);
-    }
-
-    /**
-     * @param string $url
+     * @param string $username
      * @return array
      */
-    public function findByRssUrl(string $url): array
+    public function findByUsername(string $username): array
     {
-        $rss = $this->getRssFeedFromCache();
-        if ($rss === []) {
-            $fetchProfile = GeneralUtility::makeInstance(FetchRss::class);
-            $rss = $fetchProfile->fetch($url);
-            $this->cacheRssFeed($rss);
-        }
-        return $rss;
+        return [];
     }
 
     /**
-     * @param array $rssFeed
+     * @param string $username
+     * @param array $feed
      * @return void
      */
-    protected function cacheRssFeed(array $rssFeed): void
+    public function insert(string $username, array $feed): void
     {
-        if ($rssFeed !== []) {
-            $this->cacheInstance->set($this->getCacheIdentifier(), $rssFeed, [$this->cacheKey], $this->cacheLifeTime);
-        }
+        $this->deleteByUsername($username);
+        $this->insertByUsername($username, $feed);
     }
 
     /**
-     * @return array
+     * @param string $username
+     * @return void
      */
-    protected function getRssFeedFromCache(): array
+    protected function deleteByUsername(string $username): void
     {
-        $rssFeed = [];
-        $rssFeedCache = $this->cacheInstance->get($this->getCacheIdentifier());
-        if (!empty($rssFeedCache)) {
-            $rssFeed = $rssFeedCache;
-        }
-        return $rssFeed;
+        $queryBuilder = DatabaseUtility::getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder
+            ->delete(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($username))
+            )
+            ->execute();
     }
 
     /**
-     * @return string
+     * @param string $username
+     * @param array $feed
+     * @return void
      */
-    protected function getCacheIdentifier(): string
+    protected function insertByUsername(string $username, array $feed): void
     {
-        return md5($this->contentObject->data['uid'] . $this->cacheKey);
+        $queryBuilder = DatabaseUtility::getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder
+            ->insert(self::TABLE_NAME)
+            ->values([
+                'username' => $username,
+                'data' => json_encode($feed),
+                'import_date' => time()
+            ])
+            ->execute();
     }
 }
