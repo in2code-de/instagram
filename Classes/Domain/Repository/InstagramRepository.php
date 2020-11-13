@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace In2code\Instagram\Domain\Repository;
 
+use In2code\Instagram\Utility\ArrayUtility;
 use In2code\Instagram\Utility\DatabaseUtility;
 
 /**
@@ -15,8 +16,22 @@ class InstagramRepository
      * @param string $username
      * @return array
      */
-    public function findByUsername(string $username): array
+    public function findDataByUsername(string $username): array
     {
+        $queryBuilder = DatabaseUtility::getQueryBuilderForTable(self::TABLE_NAME);
+        $data = (string)$queryBuilder
+            ->select('data')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($username))
+            )
+            ->setMaxResults(1)
+            ->orderBy('uid', 'desc')
+            ->execute()
+            ->fetchColumn();
+        if (ArrayUtility::isJsonArray($data)) {
+            return json_decode($data, true);
+        }
         return [];
     }
 

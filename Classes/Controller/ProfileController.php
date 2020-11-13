@@ -2,8 +2,7 @@
 declare(strict_types=1);
 namespace In2code\Instagram\Controller;
 
-use In2code\Instagram\Domain\Repository\InstagramRepositoryOld;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use In2code\Instagram\Domain\Repository\InstagramRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -13,12 +12,25 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class ProfileController extends ActionController
 {
     /**
+     * @var InstagramRepository
+     */
+    protected $instagramRepository = null;
+
+    /**
+     * ProfileController constructor.
+     * @param InstagramRepository $instagramRepository
+     */
+    public function __construct(InstagramRepository $instagramRepository)
+    {
+        $this->instagramRepository = $instagramRepository;
+    }
+
+    /**
      * @return void
      */
     public function showAction()
     {
-        $instagramRepository = GeneralUtility::makeInstance(InstagramRepositoryOld::class, $this->getContentObject());
-        $rssFeed = $instagramRepository->findByRssUrl($this->settings['url']);
+        $rssFeed = $this->instagramRepository->findDataByUsername($this->settings['username']);
         $this->view->assignMultiple([
             'data' => $this->getContentObject()->data,
             'feed' => $rssFeed

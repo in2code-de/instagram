@@ -3,23 +3,25 @@
 	  data-namespace-typo3-fluid="true">
 
 <div class="c-socialwall">
-	<f:for each="{feed.channel.item}" as="item">
-		<div class="c-socialwall__item c-socialwall__item--instagram">
-			<f:link.external uri="{item.link}" title="{feed.channel.title}" target="_blank" rel="noopener">
+	<div class="c-socialwall">
+		<f:for each="{feed}" as="image">
+			<div class="c-socialwall__item c-socialwall__item--instagram">
+				<f:link.external uri="https://www.instagram.com/{settings.profileId}/" title="Instagram profile {settings.profileId}" target="_blank" rel="noopener">
 
-				<instagram:isLocalImageExisting item="{item}">
-					<f:then>
-						<f:image src="/typo3temp/assets/tx_instagram/{item.guid}.jpg" alt="{item.title}" title="{item.title}" width="500c" height="500c" />
-					</f:then>
-					<f:else>
-						<img src="{item.imageurl}" alt="{item.title}" title="{item.title}" width="500" height="500" />
-					</f:else>
-				</instagram:isLocalImageExisting>
+					<instagram:isLocalImageExisting node="{image.node}">
+						<f:then>
+							<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
+						</f:then>
+						<f:else>
+							<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
+						</f:else>
+					</instagram:isLocalImageExisting>
 
-				<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
-			</f:link.external>
-		</div>
-	</f:for>
+					<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
+				</f:link.external>
+			</div>
+		</f:for>
+	</div>
 </div>
 
 </html>

@@ -7,6 +7,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
  * Class IsLocalImageExistingViewHelper
+ * @noinspection PhpUnused
  */
 class IsLocalImageExistingViewHelper extends AbstractConditionViewHelper
 {
@@ -21,7 +22,7 @@ class IsLocalImageExistingViewHelper extends AbstractConditionViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('item', 'array', 'item array from rss feed', false);
+        $this->registerArgument('node', 'array', 'Array from instagram', false);
     }
 
     /**
@@ -31,7 +32,7 @@ class IsLocalImageExistingViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null): bool
     {
-        $file = GeneralUtility::getFileAbsFileName(self::$imageFolder) . $arguments['item']['guid'] . '.jpg';
+        $file = GeneralUtility::getFileAbsFileName(self::$imageFolder) . $arguments['node']['shortcode'] . '.jpg';
         return is_file($file);
     }
 }

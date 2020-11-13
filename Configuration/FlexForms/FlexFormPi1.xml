@@ -10,17 +10,17 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<settings.url>
+					<settings.username>
 						<TCEforms>
 							<exclude>1</exclude>
-							<label>RSS URL</label>
+							<label>Instagram Username</label>
 							<config>
 								<type>input</type>
-								<default>https://rss.app/feeds/CizuljZUv53Wxfha.xml</default>
+								<default>in2code.de</default>
 								<eval>trim,required</eval>
 							</config>
 						</TCEforms>
-					</settings.url>
+					</settings.username>
 				</el>
 			</ROOT>
 		</main>
