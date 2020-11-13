@@ -86,7 +86,9 @@ Example html:
 
 ![Images from the instagram feed](Documentation/Images/frontend.png "Images from the instagram feed")
 
-![Plugin](Documentation/Images/backend.png "Plugin")
+![Plugin Flexform](Documentation/Images/backend.png "Plugin Flexform")
+
+![Plugin preview](Documentation/Images/backend-preview.png "Plugin preview")
 
 
 ## Changelog
