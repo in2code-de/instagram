@@ -2,9 +2,9 @@
 
 ## Introduction
 
-BBecause of the annoying Instagram API we searched for a simple way to show feed images without using any API. 
-Inspired from the JavaScript plugin https://github.com/jsanahuja/InstagramFeed and there functionality we build 
-the same with PHP.
+Because of the annoying Instagram API we searched for a simple way to show feed images without using any API. 
+Inspired from https://github.com/rss-bridge/rss-bridge and there functionality we are using the same way as TYPO3
+extension.
 
 
 ## Explanation
@@ -25,8 +25,8 @@ the one hand. On the other hand there is a plugin where you can show the feed on
 Add a new scheduler task of type `Execute console commands (scheduler)` and select `instagram:importfeed`. Now you can
 add a frequency (e.g. `0 0 */2 * *` for 48h), a instagram username and a limit.
 
-Note: If the frequency is too high, the risk that instagram will block your server for a time is relative high. At the
-moment I would not recommend less then once a day.
+**Note:** If the frequency is too high, the risk that instagram will block your server (because you do not use the
+official API) for some time is relative high. At the moment I would not recommend less then once a day.
 
 ![Scheduler task](Documentation/Images/scheduler.png "Scheduler task")
 
@@ -84,9 +84,15 @@ Example html:
 
 ## Screenshots
 
+### Example frontend output: 
+
 ![Images from the instagram feed](Documentation/Images/frontend.png "Images from the instagram feed")
 
+### Plugin in backend:
+
 ![Plugin Flexform](Documentation/Images/backend.png "Plugin Flexform")
+
+### Plugin overview in backend page module:
 
 ![Plugin preview](Documentation/Images/backend-preview.png "Plugin preview")
 
