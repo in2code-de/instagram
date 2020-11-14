@@ -28,6 +28,6 @@ class GetFeedsViewHelper extends AbstractViewHelper
     {
         /** @var InstagramRepository $instagramRepository */
         $instagramRepository = GeneralUtility::makeInstance(InstagramRepository::class);
-        return $instagramRepository->findDataByUsername($this->arguments['flexForm']['settings']['username']);
+        return $instagramRepository->findDataByUsername((string)$this->arguments['flexForm']['settings']['username']);
     }
 }

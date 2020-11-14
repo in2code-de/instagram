@@ -30,7 +30,7 @@ class ProfileController extends ActionController
      */
     public function showAction()
     {
-        $rssFeed = $this->instagramRepository->findDataByUsername($this->settings['username']);
+        $rssFeed = $this->instagramRepository->findDataByUsername((string)$this->settings['username']);
         $this->view->assignMultiple([
             'data' => $this->getContentObject()->data,
             'feed' => $rssFeed
