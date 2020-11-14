@@ -101,6 +101,7 @@ Example html:
 
 | Version    | Date       | State      | Description      |
 | ---------- | ---------- | ---------- | ---------------- |
+| 4.0.1      | 2020-11-14 | Bugfix     | Fix typo in ext_tables.sql |
 | 4.0.0 !!!  | 2020-11-13 | Task       | Add a scheduler task to import feeds (without RSS feed now). A plugin allows you to push the images into the frontend |
 | 3.0.0 !!!  | 2020-06-05 | Task       | Use RSS-feed now for a workarround that server request are blocked by instagram |
 | 2.0.0      | 2020-05-08 | Task       | Store images locally now to improve privacy of your visitors. Use content element uid for building individual caches now |
