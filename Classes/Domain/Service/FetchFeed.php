@@ -15,7 +15,7 @@ class FetchFeed
     /**
      * @var string
      */
-    protected $feedUri = 'https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={%%22id%%22:%%22%d%%22,%%22first%%22:%d}';
+    protected $feedUri = 'https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={%%22id%%22:%%22%s%%22,%%22first%%22:%d}';
 
     /**
      * @var string
