@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace In2code\Instagram\Domain\Service;
 
+use GuzzleHttp\Cookie\CookieJar;
 use In2code\Instagram\Exception\FetchCouldNotBeResolvedException;
 use In2code\Instagram\Utility\FileUtility;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -33,6 +34,13 @@ class FetchFeed
     protected $storeImages = true;
 
     /**
+     * Session id of an open instagram session
+     *
+     * @var string
+     */
+    protected $sessionId = '';
+
+    /**
      * @var RequestFactory
      */
     protected $requestFactory;
@@ -49,20 +57,22 @@ class FetchFeed
     /**
      * @param string $username
      * @param int $limit
+     * @param string $sessionId
      * @return array
      * @throws FetchCouldNotBeResolvedException
      */
-    public function get(string $username, int $limit): array
+    public function get(string $username, int $limit, string $sessionId): array
     {
-        $configuration = $this->fetchFromInstagram($username, $limit);
-        if (empty($configuration['data']['user']['edge_owner_to_timeline_media']['edges'])) {
+        $this->sessionId = $sessionId;
+        $fetch = $this->fetchFromInstagram($username, $limit);
+        if (empty($fetch['data']['user']['edge_owner_to_timeline_media']['edges'])) {
             throw new FetchCouldNotBeResolvedException(
                 'Json array structure changed? Could not get value edge_owner_to_timeline_media',
                 1588171346
             );
         }
 
-        $feed = $configuration['data']['user']['edge_owner_to_timeline_media']['edges'];
+        $feed = $fetch['data']['user']['edge_owner_to_timeline_media']['edges'];
         $this->persistImages($feed);
         return $feed;
     }
@@ -76,7 +86,15 @@ class FetchFeed
     protected function fetchFromInstagram(string $username, int $limit): array
     {
         $profileUri = sprintf($this->profileUri, $username);
-        $request = $this->requestFactory->request($profileUri);
+        $headers = ['allow_redirects' => false] + $this->getCookieArray();
+        $request = $this->requestFactory->request($profileUri, 'GET', $headers);
+
+        if ($request->getStatusCode() === 302) {
+            throw new FetchCouldNotBeResolvedException(
+                'It seems that instagram blocked your anonymous request. You could pass a valid session id.',
+                1605545299
+            );
+        }
         if ($request->getStatusCode() !== 200) {
             throw new FetchCouldNotBeResolvedException(
                 'Could not fetch profile for "' . $username . '" on "' . $profileUri . '"',
@@ -87,7 +105,7 @@ class FetchFeed
         $profile = json_decode($request->getBody()->getContents(), true);
 
         $feedUri = sprintf($this->feedUri, $profile['graphql']['user']['id'], $limit);
-        $request = $this->requestFactory->request($feedUri);
+        $request = $this->requestFactory->request($feedUri, 'GET', $headers);
         if ($request->getStatusCode() !== 200) {
             throw new FetchCouldNotBeResolvedException(
                 'Could not fetch feed for "' . $username . '" on "' . $feedUri . '"',
@@ -138,5 +156,19 @@ class FetchFeed
             throw new FetchCouldNotBeResolvedException($exception->getMessage(), 1588947539);
         }
         return $content;
+    }
+
+    /**
+     * Build a configuration with a session id cookie for CURL requests
+     *
+     * @return array
+     */
+    protected function getCookieArray(): array
+    {
+        if ($this->sessionId !== '') {
+            $cookies = CookieJar::fromArray(['sessionid' => $this->sessionId], 'instagram.com');
+            return ['cookies' => $cookies];
+        }
+        return [];
     }
 }

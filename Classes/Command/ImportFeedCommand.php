@@ -44,6 +44,7 @@ class ImportFeedCommand extends Command
         $this->setDescription('Import instagram feed');
         $this->addArgument('username', InputArgument::REQUIRED, 'Instagram username');
         $this->addArgument('limit', InputArgument::OPTIONAL, 'Limit for posts', 20);
+        $this->addArgument('sessionid', InputArgument::OPTIONAL, 'Valid sessionid', '');
     }
 
     /**
@@ -55,14 +56,17 @@ class ImportFeedCommand extends Command
     {
         try {
             $username = $input->getArgument('username');
-            $limit = (int)$input->getArgument('limit');
-            $feed = $this->fetchFeed->get($username, $limit);
+            $feed = $this->fetchFeed->get(
+                $username,
+                (int)$input->getArgument('limit'),
+                $input->getArgument('sessionid')
+            );
             $this->instagramRepository->insert($username, $feed);
             $output->writeln(count($feed) . ' stories from ' . $username . ' stored into database');
             return 0;
         } catch (\Exception $exception) {
             $output->writeln('Feed could not be fetched from Instagram');
-            $output->writeln($exception->getMessage());
+            $output->writeln('Reason: ' . $exception->getMessage());
             return 1605297993;
         }
     }
