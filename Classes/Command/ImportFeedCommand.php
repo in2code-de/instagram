@@ -42,9 +42,9 @@ class ImportFeedCommand extends Command
     public function configure()
     {
         $this->setDescription('Import instagram feed');
-        $this->addArgument('username', InputArgument::REQUIRED, 'Instagram username');
-        $this->addArgument('limit', InputArgument::OPTIONAL, 'Limit for posts', 20);
-        $this->addArgument('sessionid', InputArgument::OPTIONAL, 'Valid sessionid', '');
+        $this->addArgument('username', InputArgument::REQUIRED, 'Instagram username for the feed import');
+        $this->addArgument('limit', InputArgument::OPTIONAL, 'How many posts should be imported?', 20);
+        $this->addArgument('sessionid', InputArgument::OPTIONAL, 'Optional: Valid sessionid (see documentation)', '');
     }
 
     /**

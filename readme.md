@@ -25,10 +25,17 @@ the one hand. On the other hand there is a plugin where you can show the feed on
 Add a new scheduler task of type `Execute console commands (scheduler)` and select `instagram:importfeed`. Now you can
 add a frequency (e.g. `0 0 */2 * *` for 48h), a instagram username and a limit.
 
-**Note:** If the frequency is too high, the risk that instagram will block your server (because you do not use the
-official API) for some time is relative high. At the moment I would not recommend less then once a day.
+**Note:** If the frequency is too high, the risk that instagram will block your anonym requests from the server 
+(because you do not use the official API) for some time is relative high. At the moment I would not recommend less 
+then once a day. See FAQ below how to deal with blocked requests by using a valid session id.
 
 ![Scheduler task](Documentation/Images/scheduler.png "Scheduler task")
+
+| Field         | Description                                                                                                    |
+| ------------- | -------------------------------------------------------------------------------------------------------------- |
+| username      | Every task can import current posts from one user. If you want to show more feeds, you have to add more tasks. |
+| limit         | Set a limit for your imported feeds to show as much posts as you want and store as less as it is needed.       |
+| sessionid     | Optional: If your anonymous requests get blocked, you can use a sessionid to get feed details (see FAQ below)  |
 
 ### HTML output modification
 
@@ -95,6 +102,43 @@ Example html:
 ### Plugin overview in backend page module:
 
 ![Plugin preview](Documentation/Images/backend-preview.png "Plugin preview")
+
+
+## FAQ
+
+### Q: Feed cannot be imported
+
+A: There are some possible reasons why a feed can not be imported (any more). To find out what's going on, you should
+try to import the feed from CLI to get a valid message.
+
+Import feed from user **in2code.de**
+
+`./vendor/bin/typo3 instagram:importfeed in2code.de`
+
+Possible error messages are
+
+#### Reason: Could not fetch profile for "username" on "uri..."
+
+A: Check if it is possible to read the instagram url (firewall settings) with a CURL request:
+
+`curl -I "https://www.instagram.com/[username]/?__a=1"`
+
+This should be possible
+
+#### Reason: It seems that instagram blocked your anonymous request. You could pass a session id.
+
+A: Instagram don't want that you read the JSON for your imports. So if you read those files too often, your IP is on
+a blocklist. This means instagram wants you to login from now on. No worry, you can open your browser with an
+anonymous tab and open the URL `https://www.instagram.com/accounts/login/` and login with your username and password.
+Now, look into your cookie values, you will see a cookie with name "sessionid" and a value. Copy the value and close the
+browser (do not log out). This should be valid for 12 month.
+You can store the session id value into your scheduler task or simply pass it when connecting instagram:
+
+`./vendor/bin/typo3 instagram:importfeed in2code.de 12 sessionIdValue`
+
+#### Reason: Json array structure changed? Could not get value edge_owner_to_timeline_media
+
+A: It could be that instagram changed the basic structure of their json file. This extension needs an update now.
 
 
 ## Changelog
