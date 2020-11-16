@@ -20,22 +20,37 @@ the one hand. On the other hand there is a plugin where you can show the feed on
 
 ## Configuration
 
+### CLI commands
+
+Import some posts from `in2code.de`:
+
+`./vendor/bin/typo3 instagram:importfeed in2code.de`
+
+Import some posts with a limit a session id (see FAQ for details) and get notified on errors via email:
+
+`./vendor/bin/typo3 instagram:importfeed in2code.de 3 abcdef123456789abcdef service@in2code.de`
+
+Import some posts and get notified about errors:
+
+`./vendor/bin/typo3 instagram:importfeed in2code.de 0 '' service@in2code.de`
+
 ### Scheduler
 
 Add a new scheduler task of type `Execute console commands (scheduler)` and select `instagram:importfeed`. Now you can
 add a frequency (e.g. `0 0 */2 * *` for 48h), a instagram username and a limit.
 
-**Note:** If the frequency is too high, the risk that instagram will block your anonym requests from the server 
+**Note:** If the frequency is too high, the risk that instagram will block your anonymous requests from the server 
 (because you do not use the official API) for some time is relative high. At the moment I would not recommend less 
 then once a day. See FAQ below how to deal with blocked requests by using a valid session id.
 
 ![Scheduler task](Documentation/Images/scheduler.png "Scheduler task")
 
-| Field         | Description                                                                                                    |
-| ------------- | -------------------------------------------------------------------------------------------------------------- |
-| username      | Every task can import current posts from one user. If you want to show more feeds, you have to add more tasks. |
-| limit         | Set a limit for your imported feeds to show as much posts as you want and store as less as it is needed.       |
-| sessionid     | Optional: If your anonymous requests get blocked, you can use a sessionid to get feed details (see FAQ below)  |
+| Field         | Description                                                                                                                               |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| username      | Every task can import current posts from one user. If you want to show more feeds, you have to add more tasks.                            |
+| limit         | Set a limit for your imported feeds to show as much posts as you want and store as less as it is needed.                                  |
+| sessionid     | Optional: If your anonymous requests get blocked, you can use a sessionid to get feed details (see FAQ below).                            |
+| receivers     | Optional: Get notified via email if a CURL error occurs (e.g. if instagram blocks your requests). Commaseparated email list is provided.  |
 
 ### HTML output modification
 
