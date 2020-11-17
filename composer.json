@@ -1,6 +1,6 @@
 {
   "name": "in2code/instagram",
-  "description": "Show images from an instagram profile without API access",
+  "description": "Show images and posts from instagram profiles without using the annoying Instagram API",
   "keywords": [
     "instagram"
   ],

@@ -1,7 +1,7 @@
 <?php
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'instagram profile',
-    'description' => 'Show images form an instagram profile without annoying API',
+    'title' => 'instagram',
+    'description' => 'Show images and posts from instagram profiles without using the annoying Instagram API',
     'category' => 'plugin',
     'version' => '5.0.0',
     'author' => 'Alex Kellner',
