@@ -40,6 +40,7 @@ class NotificationMail
         /** @var FluidEmail $email */
         $email = GeneralUtility::makeInstance(FluidEmail::class)
             ->to($email)
+            ->subject('in2code/instagram failure')
             ->setTemplate('Default')
             ->assignMultiple([
                 'headline' => 'in2code/instagram failure',
