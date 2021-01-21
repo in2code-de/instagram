@@ -11,10 +11,27 @@
 
 						<instagram:isLocalImageExisting node="{image.node}">
 							<f:then>
-								<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" title="{image.node.edge_media_to_caption.edges.0.node.text -> f:format.crop(maxCharacters: 120, append: ' ...')}" width="500c" height="500c" />
+								<picture>
+									<source srcset="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg', width:'500c', height:'500c', fileExtension: 'webp')}" type="image/webp">
+									<source srcset="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg', width:'500c', height:'500c', fileExtension: 'jpg')}" type="image/jpeg">
+
+									<img
+										src="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg', width:'500c', height:'500c')}"
+										title="{image.node.edge_media_to_caption.edges.0.node.text -> f:format.crop(maxCharacters: 120, append: ' ...')}"
+										alt="{image.node.accessibility_caption}"
+										loading="lazy" />
+								</picture>
 							</f:then>
 							<f:else>
-								<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" title="{image.node.edge_media_to_caption.edges.0.node.text -> f:format.crop(maxCharacters: 120, append: ' ...')}" width="500" height="500" />
+								<f:comment>
+									If image is not available on the local machine (for any reasons), load from instagram directly
+								</f:comment>
+								<img
+									src="{image.node.display_url}"
+									alt="{image.node.accessibility_caption}"
+									title="{image.node.edge_media_to_caption.edges.0.node.text -> f:format.crop(maxCharacters: 120, append: ' ...')}"
+									width="500"
+									height="500" />
 							</f:else>
 						</instagram:isLocalImageExisting>
 
