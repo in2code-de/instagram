@@ -160,6 +160,7 @@ A: It could be that instagram changed the basic structure of their json file. Th
 
 | Version    | Date       | State      | Description      |
 | ---------- | ---------- | ---------- | ---------------- |
+| 5.1.0      | 2021-01-21 | Featrue    | Render images in listview in webp format. |
 | 5.0.2      | 2020-12-23 | Bugfix     | Add a subject for error mails. |
 | 5.0.1      | 2020-11-27 | Bugfix     | Enable caching for the plugin. |
 | 5.0.0      | 2020-11-16 | Feature    | Pass a sessionid to instagram for blocked requests. Added a notification service for CURL errors. |
