@@ -1,9 +1,9 @@
 <?php
 $EM_CONF[$_EXTKEY] = [
     'title' => 'instagram',
-    'description' => 'Show images and posts from instagram profiles without using the annoying Instagram API',
+    'description' => 'Show images and posts from instagram profiles',
     'category' => 'plugin',
-    'version' => '5.1.0',
+    'version' => '6.0.0',
     'author' => 'Alex Kellner',
     'author_email' => 'alexander.kellner@in2code.de',
     'author_company' => 'in2code.de',
@@ -15,6 +15,5 @@ $EM_CONF[$_EXTKEY] = [
         ],
         'conflicts' => [],
         'suggests' => [],
-    ],
-    '_md5_values_when_last_written' => '',
+    ]
 ];
