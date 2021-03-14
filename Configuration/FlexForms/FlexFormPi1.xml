@@ -16,11 +16,44 @@
 							<label>Instagram Username</label>
 							<config>
 								<type>input</type>
-								<default>in2code.de</default>
+								<placeholder>in2code.de</placeholder>
 								<eval>trim,required</eval>
 							</config>
 						</TCEforms>
 					</settings.username>
+					<settings.appId>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>App ID</label>
+							<config>
+								<type>input</type>
+								<placeholder>12345678901234567</placeholder>
+								<eval>trim,required,int</eval>
+							</config>
+						</TCEforms>
+					</settings.appId>
+					<settings.appSecret>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>App secret</label>
+							<config>
+								<type>input</type>
+								<placeholder>e543d40cc05565d1880bb81768e9ca87</placeholder>
+								<eval>trim,required,alphanum</eval>
+							</config>
+						</TCEforms>
+					</settings.appSecret>
+					<settings.appReturnUrl>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>App return URL</label>
+							<config>
+								<type>input</type>
+								<placeholder>https://www.in2code.de/</placeholder>
+								<eval>trim,required</eval>
+							</config>
+						</TCEforms>
+					</settings.appReturnUrl>
 					<settings.limit>
 						<TCEforms>
 							<exclude>1</exclude>
@@ -40,6 +73,16 @@
 							</config>
 						</TCEforms>
 					</settings.limit>
+					<settings.getToken>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>Token status</label>
+							<config>
+								<type>user</type>
+								<renderType>instagramGetToken</renderType>
+							</config>
+						</TCEforms>
+					</settings.getToken>
 				</el>
 			</ROOT>
 		</main>

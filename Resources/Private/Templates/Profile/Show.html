@@ -4,21 +4,21 @@
 
 <div class="c-socialwall">
 	<div class="c-socialwall">
-		<f:for each="{feed}" as="image" iteration="iteration">
+		<f:for each="{feed.data}" as="image" iteration="iteration">
 			<f:if condition="{iteration.cycle} <= {settings.limit}">
 				<div class="c-socialwall__item c-socialwall__item--instagram">
-					<f:link.external uri="https://www.instagram.com/p/{image.node.shortcode}/" title="Instagram profile {settings.username}" target="_blank" rel="noopener">
+					<f:link.external uri="{image.permalink}" title="Instagram profile {settings.username}" target="_blank" rel="noopener">
 
-						<instagram:isLocalImageExisting node="{image.node}">
+						<instagram:isLocalImageExisting id="{image.id}">
 							<f:then>
 								<picture>
-									<source srcset="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg', width:'500c', height:'500c', fileExtension: 'webp')}" type="image/webp">
-									<source srcset="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg', width:'500c', height:'500c', fileExtension: 'jpg')}" type="image/jpeg">
+									<source srcset="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.id}.jpg', width:'500c', height:'500c', fileExtension: 'webp')}" type="image/webp">
+									<source srcset="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.id}.jpg', width:'500c', height:'500c', fileExtension: 'jpg')}" type="image/jpeg">
 
 									<img
-										src="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg', width:'500c', height:'500c')}"
-										title="{image.node.edge_media_to_caption.edges.0.node.text -> f:format.crop(maxCharacters: 120, append: ' ...')}"
-										alt="{image.node.accessibility_caption}"
+										src="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.id}.jpg', width:'500c', height:'500c')}"
+										title="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
+										alt="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
 										loading="lazy" />
 								</picture>
 							</f:then>
@@ -27,15 +27,15 @@
 									If image is not available on the local machine (for any reasons), load from instagram directly
 								</f:comment>
 								<img
-									src="{image.node.display_url}"
-									alt="{image.node.accessibility_caption}"
-									title="{image.node.edge_media_to_caption.edges.0.node.text -> f:format.crop(maxCharacters: 120, append: ' ...')}"
+									src="{image.media_url}"
+									title="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
+									alt="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
 									width="500"
 									height="500" />
 							</f:else>
 						</instagram:isLocalImageExisting>
 
-						<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
+						<p>{image.caption}</p>
 					</f:link.external>
 				</div>
 			</f:if>

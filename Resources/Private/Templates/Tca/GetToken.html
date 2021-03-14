@@ -1,0 +1,50 @@
+<f:if condition="{isReadyToGetToken}">
+	<f:then>
+		<f:if condition="{isTokenValid}">
+			<f:then>
+				<f:render section="TokenExists" arguments="{_all}"/>
+			</f:then>
+			<f:else>
+				<f:render section="GetToken" arguments="{_all}"/>
+			</f:else>
+		</f:if>
+	</f:then>
+	<f:else>
+		<f:render section="SaveFlexForm"/>
+	</f:else>
+</f:if>
+
+
+
+<f:section name="SaveFlexForm">
+	<p class="alert alert-danger" role="alert">
+		Please add a <strong>username</strong>, <strong>appId</strong>,
+		<strong>appSecret</strong> and <strong>app return URL</strong> and save this content element.
+	</p>
+</f:section>
+
+
+
+<f:section name="GetToken">
+	<p class="alert alert-warning" role="alert">
+		There is no token to instagram username <strong>{fields.username}</strong>
+	</p>
+	<a class="btn btn-primary" href="{authenticationUrl}" target="_blank" rel="noopener noreferrer">Get new token</a>
+</f:section>
+
+
+
+<f:section name="TokenExists">
+	<f:if condition="{isDayUntilExpirationNear}">
+		<f:then>
+			<f:variable name="className" value="warning"/>
+		</f:then>
+		<f:else>
+			<f:variable name="className" value="success"/>
+		</f:else>
+	</f:if>
+
+	<p class="alert alert-{className}" role="alert" title="Valid until {f:format.date(format:'%Y-%m-%d', date:tokenExpireDate)}">
+		Token already exists and is still valid until {daysUntilExpiration} days (tokens can be automatically refreshed via scheduler task).
+	</p>
+</f:section>

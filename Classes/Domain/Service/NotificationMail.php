@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace In2code\Instagram\Domain\Service;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

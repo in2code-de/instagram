@@ -22,5 +22,21 @@ call_user_func(
         if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['instagram'])) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['instagram'] = [];
         }
+
+        /**
+         * UserFunc for TCA and FlexForm
+         */
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1615740358] = [
+            'nodeName' => 'instagramGetToken',
+            'priority' => 50,
+            'class' => \In2code\Instagram\Tca\GetToken::class,
+        ];
+
+        /**
+         * ContentElementWizard
+         */
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+            '@import "EXT:instagram/Configuration/TSConfig/ContentElementWizard.typoscript"'
+        );
     }
 );

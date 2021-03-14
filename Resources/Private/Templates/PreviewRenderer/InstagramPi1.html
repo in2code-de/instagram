@@ -8,18 +8,18 @@
 			</p>
 
 			<div class="row row-no-gutters">
-				<f:alias map="{images:'{instagram:backend.getFeeds(flexForm:flexForm)}'}">
-					<f:if condition="{images -> f:count()} > 0">
+				<f:alias map="{images:'{instagram:backend.getFeed(flexForm:flexForm)}'}">
+					<f:if condition="{images.data -> f:count()} > 0">
 						<f:then>
-							<f:for each="{images}" as="image" iteration="iteration">
+							<f:for each="{images.data}" as="image" iteration="iteration">
 								<f:if condition="{iteration.cycle} < 7">
 									<div class="col-md-2">
-										<instagram:isLocalImageExisting node="{image.node}">
+										<instagram:isLocalImageExisting id="{image.id}">
 											<f:then>
-												<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
+												<f:image src="/typo3temp/assets/tx_instagram/{image.id}.jpg" alt="{image.caption}" width="500c" height="500c" />
 											</f:then>
 											<f:else>
-												<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
+												<img src="{image.media_url}" alt="{image.caption}" width="500" height="500" />
 											</f:else>
 										</instagram:isLocalImageExisting>
 									</div>
@@ -28,7 +28,7 @@
 						</f:then>
 						<f:else>
 							<div class="alert alert-danger" role="alert">
-								<p>No feeds found in database. Please use scheduler to import feeds first. See documentation for more details.</p>
+								<p>No feed found in database to given username. Please use scheduler to import feeds first. See documentation for more details.</p>
 							</div>
 						</f:else>
 					</f:if>

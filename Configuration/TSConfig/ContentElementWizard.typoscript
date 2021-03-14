@@ -1,0 +1,13 @@
+mod.wizards.newContentElement.wizardItems.plugins {
+	elements {
+		instagram {
+			iconIdentifier = extension-instagram
+			title = Instagram Plugin
+			description = Show an instagram feed
+			tt_content_defValues {
+				CType = list
+				list_type = instagram_pi1
+			}
+		}
+	}
+}

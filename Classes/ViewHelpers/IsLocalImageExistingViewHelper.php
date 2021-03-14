@@ -22,7 +22,7 @@ class IsLocalImageExistingViewHelper extends AbstractConditionViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('node', 'array', 'Array from instagram', false);
+        $this->registerArgument('id', 'int', 'post identifier', true);
     }
 
     /**
@@ -32,7 +32,7 @@ class IsLocalImageExistingViewHelper extends AbstractConditionViewHelper
      */
     protected static function evaluateCondition($arguments = null): bool
     {
-        $file = GeneralUtility::getFileAbsFileName(self::$imageFolder) . $arguments['node']['shortcode'] . '.jpg';
+        $file = GeneralUtility::getFileAbsFileName(self::$imageFolder) . $arguments['id'] . '.jpg';
         return is_file($file);
     }
 }

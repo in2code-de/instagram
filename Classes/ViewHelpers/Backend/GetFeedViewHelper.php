@@ -2,15 +2,15 @@
 declare(strict_types=1);
 namespace In2code\Instagram\ViewHelpers\Backend;
 
-use In2code\Instagram\Domain\Repository\InstagramRepository;
+use In2code\Instagram\Domain\Repository\FeedRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Class GetFeedsViewHelper
+ * Class GetFeedViewHelper
  * @noinspection PhpUnused
  */
-class GetFeedsViewHelper extends AbstractViewHelper
+class GetFeedViewHelper extends AbstractViewHelper
 {
     /**
      * @return void
@@ -26,8 +26,8 @@ class GetFeedsViewHelper extends AbstractViewHelper
      */
     public function render(): array
     {
-        /** @var InstagramRepository $instagramRepository */
-        $instagramRepository = GeneralUtility::makeInstance(InstagramRepository::class);
+        /** @var FeedRepository $instagramRepository */
+        $instagramRepository = GeneralUtility::makeInstance(FeedRepository::class);
         return $instagramRepository->findDataByUsername((string)$this->arguments['flexForm']['settings']['username']);
     }
 }

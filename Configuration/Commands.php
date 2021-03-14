@@ -6,4 +6,8 @@ return [
         'class' => \In2code\Instagram\Command\ImportFeedCommand::class,
         'schedulable' => true
     ],
+    'instagram:refreshtoken' => [
+        'class' => \In2code\Instagram\Command\RefreshTokenCommand::class,
+        'schedulable' => true
+    ],
 ];

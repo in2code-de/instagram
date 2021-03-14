@@ -2,8 +2,8 @@
 declare(strict_types=1);
 namespace In2code\Instagram\Command;
 
-use In2code\Instagram\Domain\Repository\InstagramRepository;
-use In2code\Instagram\Domain\Service\FetchFeed;
+use In2code\Instagram\Domain\Repository\FeedRepository;
+use In2code\Instagram\Domain\Service\PrepareFeed;
 use In2code\Instagram\Domain\Service\NotificationMail;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,14 +17,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ImportFeedCommand extends Command
 {
     /**
-     * @var FetchFeed
+     * @var PrepareFeed
      */
-    protected $fetchFeed = null;
+    protected $prepareFeed = null;
 
     /**
-     * @var InstagramRepository
+     * @var FeedRepository
      */
-    protected $instagramRepository = null;
+    protected $feedRepository = null;
 
     /**
      * @var NotificationMail
@@ -38,8 +38,8 @@ class ImportFeedCommand extends Command
     public function __construct(string $name = null)
     {
         parent::__construct($name);
-        $this->fetchFeed = GeneralUtility::makeInstance(FetchFeed::class);
-        $this->instagramRepository = GeneralUtility::makeInstance(InstagramRepository::class);
+        $this->prepareFeed = GeneralUtility::makeInstance(PrepareFeed::class);
+        $this->feedRepository = GeneralUtility::makeInstance(FeedRepository::class);
         $this->notificationMail = GeneralUtility::makeInstance(NotificationMail::class);
     }
 
@@ -50,8 +50,6 @@ class ImportFeedCommand extends Command
     {
         $this->setDescription('Import instagram feed');
         $this->addArgument('username', InputArgument::REQUIRED, 'Instagram username for the feed import');
-        $this->addArgument('limit', InputArgument::OPTIONAL, 'How many posts should be imported?', 20);
-        $this->addArgument('sessionid', InputArgument::OPTIONAL, 'Optional: Valid sessionid (see documentation)', '');
         $this->addArgument(
             'receivers',
             InputArgument::OPTIONAL,
@@ -68,14 +66,11 @@ class ImportFeedCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $username = $input->getArgument('username');
-            $feed = $this->fetchFeed->get(
-                $username,
-                (int)$input->getArgument('limit') === 0 ? 20 : (int)$input->getArgument('limit'),
-                $input->getArgument('sessionid')
+            $feed = $this->prepareFeed->getByUsername($input->getArgument('username'));
+            $this->feedRepository->insert($input->getArgument('username'), $feed);
+            $output->writeln(
+                count($feed['data']) . ' stories from ' . $input->getArgument('username') . ' stored into database'
             );
-            $this->instagramRepository->insert($username, $feed);
-            $output->writeln(count($feed) . ' stories from ' . $username . ' stored into database');
             return 0;
         } catch (\Exception $exception) {
             $output->writeln('Feed could not be fetched from Instagram');

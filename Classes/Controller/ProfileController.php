@@ -2,9 +2,9 @@
 declare(strict_types=1);
 namespace In2code\Instagram\Controller;
 
-use In2code\Instagram\Domain\Repository\InstagramRepository;
+use In2code\Instagram\Domain\Repository\FeedRepository;
+use In2code\Instagram\Domain\Repository\TokenRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class ProfileController
@@ -12,17 +12,24 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class ProfileController extends ActionController
 {
     /**
-     * @var InstagramRepository
+     * @var FeedRepository
      */
-    protected $instagramRepository = null;
+    protected $feedRepository = null;
+
+    /**
+     * @var TokenRepository
+     */
+    protected $tokenRepository = null;
 
     /**
      * ProfileController constructor.
-     * @param InstagramRepository $instagramRepository
+     * @param FeedRepository $feedRepository
+     * @param TokenRepository $tokenRepository
      */
-    public function __construct(InstagramRepository $instagramRepository)
+    public function __construct(FeedRepository $feedRepository, TokenRepository $tokenRepository)
     {
-        $this->instagramRepository = $instagramRepository;
+        $this->feedRepository = $feedRepository;
+        $this->tokenRepository = $tokenRepository;
     }
 
     /**
@@ -30,18 +37,11 @@ class ProfileController extends ActionController
      */
     public function showAction()
     {
-        $rssFeed = $this->instagramRepository->findDataByUsername((string)$this->settings['username']);
+        $feed = $this->feedRepository->findDataByUsername((string)$this->settings['username']);
         $this->view->assignMultiple([
-            'data' => $this->getContentObject()->data,
-            'feed' => $rssFeed
+            'data' => $this->configurationManager->getContentObject()->data,
+            'feed' => $feed,
+            'token' => $this->tokenRepository->findValidTokenByUsername((string)$this->settings['username'])
         ]);
-    }
-
-    /**
-     * @return ContentObjectRenderer
-     */
-    protected function getContentObject(): ContentObjectRenderer
-    {
-        return $this->configurationManager->getContentObject();
     }
 }
