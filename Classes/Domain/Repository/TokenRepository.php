@@ -15,8 +15,8 @@ class TokenRepository
 
     /**
      * Because in the first step an authentication code will be get from instagram without relation to a username
-     * we need to add empty token records, that can be filled in a second step. Empty token will be generated only if
-     * there is no valid token.
+     * we need to add empty token records, that can be filled in a second step. Empty token will be generated when
+     * opening the plugin in the backend (only if there is no valid token).
      *
      * @param string $username
      * @param string $appId
@@ -45,6 +45,8 @@ class TokenRepository
     }
 
     /**
+     * Update an empty token record with token, expireDate and userId (if available)
+     *
      * @param string $username
      * @param string $token
      * @param int $expires Seconds when token will expire
@@ -81,6 +83,8 @@ class TokenRepository
     }
 
     /**
+     * Search for the latest empty token to fill it when the instagram website redirects you back to your site
+     *
      * @return array
      * @throws ConfigurationException
      */
@@ -140,6 +144,8 @@ class TokenRepository
     }
 
     /**
+     * Delete tokens by given username
+     *
      * @param string $username
      * @return void
      */

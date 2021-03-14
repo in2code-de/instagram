@@ -1,16 +1,26 @@
-# Instagram feed from a profile in TYPO3
+# Show a profile Instagram feed in TYPO3
 
 ## Introduction
 
-Because of the annoying Instagram API we searched for a simple way to show feed images without using any API. 
-Inspired from https://github.com/rss-bridge/rss-bridge and there functionality we are using the same way as TYPO3
-extension.
+In the past we did a lot of research to bypass the original Instagram API. Using the official interface is still pain. 
+Now version 6 of this extension respects that Instagram updated their website (some days ago) again and cover it 
+against image grapping. So, we decided now to use the official API in this extension to still deliver images on our
+website.
+Nevertheless we want to make the configuration as easy as possible even if there is some hard stuff for non-developers
+now. Version 6 has some breaking changes because of the switch to the API now (see details below).
 
 
 ## Explanation
 
-An extension that is splitted into two parts. A scheduler where you can import an instagram feed into the database on
-the one hand. On the other hand there is a plugin where you can show the feed on your page.
+This extension is splitted into two parts. A scheduler where you can import an instagram feed into the database on
+the one hand and on the other hand there is a plugin where you can show the feed on your page. The split gives us the
+possibility to still show images even if the interface is broken and in addition there are no speed limitations with 
+this kind of architecture.
+Because of the guidelines of Instagram/Facebook the first step to use the API must be done by yourself and by hand. 
+You have to add a facebook developer account and add a new "app". After that you have to get the token by yourself in a 
+browser. Once you have did this, the token can be refreshed automatically. 
+So you do not have to make the whole initialization again. See details
+below.
 
 
 ## Installation
@@ -20,37 +30,73 @@ the one hand. On the other hand there is a plugin where you can show the feed on
 
 ## Configuration
 
+### The facebook and instagram part
+
+First of all, you should follow the official guidelines with step 1, 2 and 3 - see details at 
+https://developers.facebook.com/docs/instagram-basic-display-api/getting-started
+
+* Step 1: You need a facebook developer user - see https://developers.facebook.com/apps
+* Step 2: Add a "facebook app" as described in the guidelines in step 1
+* Step 3: Configure "Instagram Basic Display" in the guidelines in step 2
+** Note: Simply use the homepage URL of your website for the "OAuth Redirect URIs" like `https://www.in2code.de/` (same for "Deauthorize Callback URL" and "Data Deletion Request Callback URL")
+** Note2: Make some notes for your new "App ID", "App secret" and the "Redirect URI" - this will be needed later in the FlexForm
+* Step 4: Add a instagram testuser as described in step 3 in the guidelines
+* Step 5: Install the extension (if not yet done)
+* Step 6: Add a Instagram plugin anywhere on your pages and open the edit view. Add "username", "App ID", "App secret" and "App return URL" and press "save"
+* Step 7: Now you will see a button at the end of the FlexForm. Click on it and a new browserwindow is opened with the Instagram website. You have to login and accept the request. After that, you will be redirected to your homepage.
+* Step 8: If you now reload the plugin, you will see a green message that tells you that you now have a valid token and how long the token is valid (no worry, ones you have created it, you can use a scheduler task to refresh it automatically)
+* Step 9: Now, you have access to the API and you can add a new scheduler task and import images from the given user (You should frequently import the feed - e.g. every 30 minutes)
+* Step 10: Once you have imported the images via scheduler, you can see the plugin output in the frontend with the given feed
+* Step 11: Don't forget to add an additional scheduler task to frequently refresh the token validation after 30-50 days, because the long-live token in Instagram expires after 60 days.
+
+
 ### CLI commands
 
-Import some posts from `in2code.de`:
+#### Import images
+
+If you have access to the instagram API (look at the FlexForm in the plugin and watch for the green message), you can
+import images via CLI or scheduler.
+
+Import the latest 25 posts from `in2code.de`:
 
 `./vendor/bin/typo3 instagram:importfeed in2code.de`
 
-Import some posts with a limit a session id (see FAQ for details) and get notified on errors via email:
+Import some posts and get notified if error happens via Email:
 
-`./vendor/bin/typo3 instagram:importfeed in2code.de 3 abcdef123456789abcdef service@in2code.de`
+`./vendor/bin/typo3 instagram:importfeed in2code.de service@in2code.de`:
 
-Import some posts and get notified about errors:
+#### Refresh tokens
 
-`./vendor/bin/typo3 instagram:importfeed in2code.de 0 '' service@in2code.de`
+Because long-live-tokens are only valid for 60 days, you can automatically refresh them after some days - with:
+
+`./vendor/bin/typo3 instagram:refreshtoken in2code.de`
+
+
 
 ### Scheduler
 
-Add a new scheduler task of type `Execute console commands (scheduler)` and select `instagram:importfeed`. Now you can
-add a frequency (e.g. `0 0 */2 * *` for 48h), a instagram username and a limit.
+#### Import images
 
-**Note:** If the frequency is too high, the risk that instagram will block your anonymous requests from the server 
-(because you do not use the official API) for some time is relative high. At the moment I would not recommend less 
-then once a day. See FAQ below how to deal with blocked requests by using a valid session id.
+Add a new scheduler task of type `Execute console commands (scheduler)` and select `instagram:importfeed`. Now you can
+add a frequency (e.g. `*/30 * * * *` for every 30 minutes), a instagram username and one (or more) email address if
+error happens (and you want get notified).
 
 ![Scheduler task](Documentation/Images/scheduler.png "Scheduler task")
 
 | Field         | Description                                                                                                                               |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | username      | Every task can import current posts from one user. If you want to show more feeds, you have to add more tasks.                            |
-| limit         | Set a limit for your imported feeds to show as much posts as you want and store as less as it is needed.                                  |
-| sessionid     | Optional: If your anonymous requests get blocked, you can use a sessionid to get feed details (see FAQ below).                            |
 | receivers     | Optional: Get notified via email if a CURL error occurs (e.g. if instagram blocks your requests). Commaseparated email list is provided.  |
+
+#### Refresh tokens
+
+There is a new scheduler task, that can be used to automatically refresh Instagram tokens. We would do this after 30-50
+days because a long-live token is valid for only 60 days.
+
+Add a new scheduler task of type `Execute console commands (scheduler)` and select `instagram:refreshtoken`. Now you can
+add a frequency (e.g. `0 5 */30 * ` for every 30 days at 5 am) and a instagram username.
+
+
 
 ### HTML output modification
 
@@ -78,21 +124,38 @@ Example html:
 
 <div class="c-socialwall">
 	<div class="c-socialwall">
-		<f:for each="{feed}" as="image" iteration="iteration">
+		<f:for each="{feed.data}" as="image" iteration="iteration">
 			<f:if condition="{iteration.cycle} <= {settings.limit}">
 				<div class="c-socialwall__item c-socialwall__item--instagram">
-					<f:link.external uri="https://www.instagram.com/{settings.username}/" title="Instagram profile {settings.username}" target="_blank" rel="noopener">
+					<f:link.external uri="{image.permalink}" title="Instagram profile {settings.username}" target="_blank" rel="noopener">
 
-						<instagram:isLocalImageExisting node="{image.node}">
+						<instagram:isLocalImageExisting id="{image.id}">
 							<f:then>
-								<f:image src="/typo3temp/assets/tx_instagram/{image.node.shortcode}.jpg" alt="{image.node.accessibility_caption}" width="500c" height="500c" />
+								<picture>
+									<source srcset="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.id}.jpg', width:'500c', height:'500c', fileExtension: 'webp')}" type="image/webp">
+									<source srcset="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.id}.jpg', width:'500c', height:'500c', fileExtension: 'jpg')}" type="image/jpeg">
+
+									<img
+										src="{f:uri.image(src:'/typo3temp/assets/tx_instagram/{image.id}.jpg', width:'500c', height:'500c')}"
+										title="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
+										alt="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
+										loading="lazy" />
+								</picture>
 							</f:then>
 							<f:else>
-								<img src="{image.node.display_url}" alt="{image.node.accessibility_caption}" width="500" height="500" />
+								<f:comment>
+									If image is not available on the local machine (for any reasons), load from instagram directly
+								</f:comment>
+								<img
+									src="{image.media_url}"
+									title="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
+									alt="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
+									width="500"
+									height="500" />
 							</f:else>
 						</instagram:isLocalImageExisting>
 
-						<p>{image.node.edge_media_to_caption.edges.0.node.text}</p>
+						<p>{image.caption}</p>
 					</f:link.external>
 				</div>
 			</f:if>
@@ -102,6 +165,7 @@ Example html:
 
 </html>
 ```
+
 
 
 ## Screenshots
@@ -121,46 +185,32 @@ Example html:
 
 ## FAQ
 
-### Q: Feed cannot be imported
+### Q: The configuration in Instagram sounds complicated
 
-A: There are some possible reasons why a feed can not be imported (any more). To find out what's going on, you should
-try to import the feed from CLI to get a valid message.
+A: Yes, we did a lot in the past to give you a gdpr proved and quick to install solution to show your instagram images
+on your website. Now Instagram updated their websites again, to block "easy" image grabbing. At the moment we do not
+see a simpler way then described above and also respect privacy for your visitors.
 
-Import feed from user **in2code.de**
+### Q: I clicked the button in the FlexForm and accepted but after that an error is shown
 
-`./vendor/bin/typo3 instagram:importfeed in2code.de`
+A: Instagram redirect you back to the configured url. If this is (e.g.) your startpage a PSR-15 middleware is listening
+for GET params like `&code=foo`. This param is given from Instagram (not from us).
 
-Possible error messages are
+### Q: There is no (e.g. german) translation of the plugin
 
-#### Reason: Could not fetch profile for "username" on "uri..."
+A: Yes, at the moment we focussed on english to speed up developing.
 
-A: Check if it is possible to read the instagram url (firewall settings) with a CURL request:
+### Q: Token is only valid for 60 days. Do I have to refresh it manually?
 
-`curl -I "https://www.instagram.com/[username]/?__a=1"`
-
-This should be possible
-
-#### Reason: It seems that instagram blocked your anonymous request. You could pass a session id.
-
-A: Instagram don't want that you read the JSON for your imports. So if you read those files too often, your IP is on
-a blocklist. This means instagram wants you to login from now on. No worry, you can open your browser with an
-anonymous tab and open the URL `https://www.instagram.com/accounts/login/` and login with your username and password.
-Now, look into your cookie values, you will see a cookie with name "sessionid" and a value. Copy the value and close the
-browser (do not log out). This should be valid for 12 month.
-You can store the session id value into your scheduler task or simply pass it when connecting instagram:
-
-`./vendor/bin/typo3 instagram:importfeed in2code.de 12 sessionIdValue`
-
-#### Reason: Json array structure changed? Could not get value edge_owner_to_timeline_media
-
-A: It could be that instagram changed the basic structure of their json file. This extension needs an update now.
+A: No, if there is a valid token, you can refresh it (e.g.) after 30 days automatically via another scheduler task.
 
 
 ## Changelog
 
 | Version    | Date       | State      | Description      |
 | ---------- | ---------- | ---------- | ---------------- |
-| 5.1.0      | 2021-01-21 | Featrue    | Render images in listview in webp format. |
+| 6.0.0 !!!  | 2021-03-15 | Task       | Another rebuild now with the useage of the original Instagram API to grap images. See installation part in documentation what you have to do now. FlexForm, Scheduler and HTML-Templates have changed (this is a pitty, but have to be done). |
+| 5.1.0      | 2021-01-21 | Feature    | Render images in listview in webp format. |
 | 5.0.2      | 2020-12-23 | Bugfix     | Add a subject for error mails. |
 | 5.0.1      | 2020-11-27 | Bugfix     | Enable caching for the plugin. |
 | 5.0.0      | 2020-11-16 | Feature    | Pass a sessionid to instagram for blocked requests. Added a notification service for CURL errors. |

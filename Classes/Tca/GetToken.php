@@ -10,6 +10,9 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class GetToken
+ * is called when the plugin is opened in the backend. This renders a message if the token is there and still valid and
+ * also gives you a link to get a initial token. This script will also generate empty token records that can be filled
+ * later with more information from a further API request.
  */
 class GetToken extends AbstractFormElement
 {
