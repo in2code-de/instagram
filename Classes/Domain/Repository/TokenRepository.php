@@ -50,12 +50,12 @@ class TokenRepository
      * @param string $username
      * @param string $token
      * @param int $expires Seconds when token will expire
-     * @param int $userId
+     * @param string $userId Must be string because of it's size
      * @return void
      * @throws ConfigurationException
      * @throws \Exception
      */
-    public function updateToken(string $username, string $token, int $expires, int $userId = 0): void
+    public function updateToken(string $username, string $token, int $expires, $userId = '0'): void
     {
         $queryBuilder = DatabaseUtility::getQueryBuilderForTable(self::TABLE_NAME);
         $uid = (int)$queryBuilder

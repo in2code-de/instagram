@@ -129,10 +129,14 @@ class InstagramRepository
      * @param string $username
      * @return array
      * @throws ApiConnectionException
+     * @throws ConfigurationException
      */
     public function getFeed(string $username): array
     {
         $tokenRecord = $this->tokenRepository->findValidTokenByUsername($username);
+        if (empty($tokenRecord['user_id']) || empty($tokenRecord['token'])) {
+            throw new ConfigurationException('No valid token record found', 1615767816);
+        }
         $url = 'https://graph.instagram.com/' . $tokenRecord['user_id'] . '/media/'
             . '?fields=id,username,media,caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username,'
             . 'children&access_token=' . $tokenRecord['token'];

@@ -55,7 +55,7 @@ class GetAuthenticationCode implements MiddlewareInterface
                 $tokenRecord['username'],
                 $result['access_token'],
                 $result['expires_in'],
-                (int)$result['user_id']
+                $result['user_id']
             );
             return new RedirectResponse('/', 301);
         }
