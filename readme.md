@@ -209,6 +209,7 @@ A: No, if there is a valid token, you can refresh it (e.g.) after 30 days automa
 
 | Version    | Date       | State      | Description      |
 | ---------- | ---------- | ---------- | ---------------- |
+| 6.0.1      | 2021-03-15 | Bugfix     | Change int to string field type for userId and appId to also handle large numbers |
 | 6.0.0 !!!  | 2021-03-15 | Task       | Another rebuild now with the useage of the original Instagram API to grap images. See installation part in documentation what you have to do now. FlexForm, Scheduler and HTML-Templates have changed (this is a pitty, but have to be done). |
 | 5.1.0      | 2021-01-21 | Feature    | Render images in listview in webp format. |
 | 5.0.2      | 2020-12-23 | Bugfix     | Add a subject for error mails. |
