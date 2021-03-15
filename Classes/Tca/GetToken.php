@@ -101,7 +101,7 @@ class GetToken extends AbstractFormElement
         $fields = ArrayUtility::cleanFlexFormArray($this->data['flexFormRowData']);
         $url = 'https://api.instagram.com/oauth/authorize?scope=user_profile,user_media&response_type=code';
         if (!empty($fields['appId'])) {
-            $url .= '&client_id=' . (int)$fields['appId'];
+            $url .= '&client_id=' . $fields['appId'];
         }
         if (!empty($fields['appReturnUrl'])) {
             $url .= '&redirect_uri=' . $fields['appReturnUrl'];

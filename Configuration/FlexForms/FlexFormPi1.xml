@@ -28,7 +28,7 @@
 							<config>
 								<type>input</type>
 								<placeholder>12345678901234567</placeholder>
-								<eval>trim,required,int</eval>
+								<eval>trim,required</eval>
 							</config>
 						</TCEforms>
 					</settings.appId>
