@@ -183,6 +183,14 @@ Example html:
 ![Plugin preview](Documentation/Images/backend-preview.png "Plugin preview")
 
 
+
+## Technical corner
+
+How to use the facebook/instagram API in general and how to test it?
+See documentation: [ApiDocumentation](Documentation/InstagramApi.md)
+
+
+
 ## FAQ
 
 ### Q: The configuration in Instagram sounds complicated
@@ -203,6 +211,10 @@ A: Yes, at the moment we focussed on english to speed up developing.
 ### Q: Token is only valid for 60 days. Do I have to refresh it manually?
 
 A: No, if there is a valid token, you can refresh it (e.g.) after 30 days automatically via another scheduler task.
+
+### Q: Error "OAuthException: Insufficient developer role Code: 400" comes up after clicking the button?
+
+A: Take care that you are logged in into facebook with your developer account at the same time
 
 
 ## Changelog
