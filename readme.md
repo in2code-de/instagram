@@ -221,6 +221,7 @@ A: Take care that you are logged in into facebook with your developer account at
 
 | Version    | Date       | State      | Description      |
 | ---------- | ---------- | ---------- | ---------------- |
+| 6.1.0      | 2021-04-13 | Task       | Fix problem "Field id specified more than once. This is only possible before version 2.1" - because of a change of the instagram interface |
 | 6.0.2      | 2021-03-17 | Task       | Add extension key to composer.json file, small documentation update |
 | 6.0.1      | 2021-03-15 | Bugfix     | Change int to string field type for userId and appId to also handle large numbers |
 | 6.0.0 !!!  | 2021-03-15 | Task       | Another rebuild now with the useage of the original Instagram API to grap images. See installation part in documentation what you have to do now. FlexForm, Scheduler and HTML-Templates have changed (this is a pitty, but have to be done). |
