@@ -138,7 +138,7 @@ class InstagramRepository
             throw new ConfigurationException('No valid token record found', 1615767816);
         }
         $url = 'https://graph.instagram.com/' . $tokenRecord['user_id'] . '/media/'
-            . '?fields=id,username,media,caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username,'
+            . '?fields=media,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username,'
             . 'children&access_token=' . $tokenRecord['token'];
         $request = $this->requestFactory->request($url);
         if ($request->getStatusCode() !== 200) {
