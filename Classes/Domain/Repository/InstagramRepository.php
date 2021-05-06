@@ -186,7 +186,7 @@ class InstagramRepository
         if ($request->getStatusCode() !== 200) {
             throw new ApiConnectionException('Could not get short-live token', 1615751508);
         }
-        $result = json_decode($request->getBody()->getContents(), true);
+        $result = json_decode($request->getBody()->getContents(), true, 512, JSON_BIGINT_AS_STRING);
         if (empty($result['access_token']) || empty($result['user_id'])) {
             throw new ApiConnectionException('Result does not contain access_token or user_id key', 1615752470);
         }
