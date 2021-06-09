@@ -216,6 +216,18 @@ A: No, if there is a valid token, you can refresh it (e.g.) after 30 days automa
 
 A: Take care that you are logged in into facebook with your developer account at the same time
 
+### Q: How to add a GDPR-known button in frontend for the visitors?
+
+A: No worries, this extension is absolutely GDPR-friendly. Text and images are stored anonymized on the server. No button needed for this.
+
+### Q: Can I access to any instagram account?
+
+A: No, because Instagram wants you to enable the access to the account, the owner has to accept this.
+
+### Q: Is an approvement needed when building a Facebook app?
+
+A: No, an approvement from Facebook is not needed.
+
 
 ## Changelog
 
