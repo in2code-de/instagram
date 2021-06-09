@@ -233,6 +233,7 @@ A: No, an approvement from Facebook is not needed.
 
 | Version    | Date       | State      | Description      |
 | ---------- | ---------- | ---------- | ---------------- |
+| 6.1.2      | 2021-06-09 | Bugfix     | Don't convert UserId to float value |
 | 6.1.1      | 2021-06-09 | Task       | Harden middleware with code recognization |
 | 6.1.0      | 2021-04-13 | Task       | Fix problem "Field id specified more than once. This is only possible before version 2.1" - because of a change of the instagram interface |
 | 6.0.2      | 2021-03-17 | Task       | Add extension key to composer.json file, small documentation update |
