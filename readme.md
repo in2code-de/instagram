@@ -235,6 +235,16 @@ A: No, because Instagram wants you to enable the access to the account, the owne
 
 A: No, an approvement from Facebook is not needed.
 
+### Q: Instagram password was changed - now I can't update the feed.
+
+A: If you change the instagram password, all tokens are not valid any more. An error comes up like
+
+```
+{"error":{"message":"Error validating access token: The session has been invalidated because the user changed their pass (truncated...)
+```
+
+In this case you have to remove all tokens (see CLI section above) and create new ones from the scratch.
+
 
 ## Changelog
 
