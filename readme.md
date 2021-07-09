@@ -71,6 +71,13 @@ Because long-live-tokens are only valid for 60 days, you can automatically refre
 
 `./vendor/bin/typo3 instagram:refreshtoken in2code.de`
 
+#### Remove all tokens
+
+If you change your instagram password, all generated tokens are not useable any more. You have to add new ones. But
+first of all, you can delete them:
+
+`./vendor/bin/typo3 instagram:removetokens`
+
 
 
 ### Scheduler

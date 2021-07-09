@@ -159,4 +159,12 @@ class TokenRepository
             )
             ->execute();
     }
+
+    /**
+     * @return void
+     */
+    public function truncateTokens(): void
+    {
+        DatabaseUtility::getConnectionForTable(self::TABLE_NAME)->truncate(self::TABLE_NAME);
+    }
 }
