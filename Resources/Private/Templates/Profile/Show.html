@@ -27,7 +27,7 @@
 									If image is not available on the local machine (for any reasons), load from instagram directly
 								</f:comment>
 								<img
-									src="{image.media_url}"
+									src="{f:if(condition: image.thumbnail_url, then: image.thumbnail_url, else: image.media_url)}"
 									title="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
 									alt="{image.caption -> f:format.crop(maxCharacters: 120, append: ' ...')}"
 									width="500"
