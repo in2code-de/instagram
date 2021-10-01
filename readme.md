@@ -250,6 +250,7 @@ In this case you have to remove all tokens (see CLI section above) and create ne
 
 | Version    | Date       | State      | Description      |
 | ---------- | ---------- | ---------- | ---------------- |
+| 6.2.1      | 2021-10-01 | Bugfix     | Prevent exception if image is a video |
 | 6.2.0      | 2021-07-09 | Feature    | Add comand that allows you to delete all existing tokens |
 | 6.1.3      | 2021-06-09 | Bugfix     | Use thumbnail images when storing local to allow video previews |
 | 6.1.2      | 2021-06-09 | Bugfix     | Don't convert UserId to float value |
