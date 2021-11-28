@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -12,7 +13,7 @@ call_user_func(
             'In2code.instagram',
             'Pi1',
             [
-                'Profile' => 'show'
+                In2code\Instagram\Controller\ProfileController::class => 'show'
             ]
         );
 
