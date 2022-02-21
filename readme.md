@@ -250,6 +250,7 @@ In this case you have to remove all tokens (see CLI section above) and create ne
 
 | Version    | Date       | State      | Description      |
 | ---------- | ---------- | ---------- | ---------------- |
+| 7.0.0      | 2022-02-21 | Task       | Support TYPO3 10 and 11 now |
 | 6.2.1      | 2021-10-01 | Bugfix     | Prevent exception if image is a video |
 | 6.2.0      | 2021-07-09 | Feature    | Add comand that allows you to delete all existing tokens |
 | 6.1.3      | 2021-06-09 | Bugfix     | Use thumbnail images when storing local to allow video previews |
