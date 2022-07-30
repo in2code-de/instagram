@@ -2,10 +2,13 @@
 	  xmlns:instagram="http://typo3.org/ns/In2code/Instagram/ViewHelpers"
 	  data-namespace-typo3-fluid="true">
 
+
+<f:variable name="lastPost">{settings.firstPost + settings.limit - 1}</f:variable>
+
 <div class="c-socialwall">
 	<div class="c-socialwall">
 		<f:for each="{feed.data}" as="image" iteration="iteration">
-			<f:if condition="{iteration.cycle} <= {settings.limit}">
+			<f:if condition="{iteration.cycle} >= {settings.firstPost} && {iteration.cycle} <= {lastPost} ">
 				<div class="c-socialwall__item c-socialwall__item--instagram">
 					<f:link.external uri="{image.permalink}" title="Instagram profile {settings.username}" target="_blank" rel="noopener">
 
