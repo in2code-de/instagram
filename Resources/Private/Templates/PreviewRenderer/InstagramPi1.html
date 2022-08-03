@@ -11,7 +11,14 @@
 				<f:alias map="{images:'{instagram:backend.getFeed(flexForm:flexForm)}'}">
 					<f:if condition="{images.data -> f:count()} > 0">
 						<f:then>
-							<f:variable name="lastPost">{flexForm.settings.firstPost + flexForm.settings.limit - 1}</f:variable>
+							<f:if condition="{settings.firstPost}">
+								<f:then>
+									<f:variable name="lastPost">{settings.firstPost + settings.limit - 1}</f:variable>
+								</f:then>
+								<f:else>
+									<f:variable name="lastPost">999999</f:variable>
+								</f:else>
+							</f:if>
 							<f:for each="{images.data}" as="image" iteration="iteration">
 								<f:if condition="{iteration.cycle} >= {flexForm.settings.firstPost} && {iteration.cycle} <= {lastPost} && {iteration.cycle} <= 8">
 									<div class="col-md-4">

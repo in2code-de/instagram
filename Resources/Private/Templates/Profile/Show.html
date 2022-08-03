@@ -2,8 +2,14 @@
 	  xmlns:instagram="http://typo3.org/ns/In2code/Instagram/ViewHelpers"
 	  data-namespace-typo3-fluid="true">
 
-
-<f:variable name="lastPost">{settings.firstPost + settings.limit - 1}</f:variable>
+<f:if condition="{settings.firstPost}">
+	<f:then>
+		<f:variable name="lastPost">{settings.firstPost + settings.limit - 1}</f:variable>
+	</f:then>
+	<f:else>
+		<f:variable name="lastPost">999999</f:variable>
+	</f:else>
+</f:if>
 
 <div class="c-socialwall">
 	<div class="c-socialwall">
