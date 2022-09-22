@@ -1,0 +1,44 @@
+.c-socialwall {
+    z-index: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center
+}
+
+.c-socialwall__item {
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 50%
+}
+
+@media screen and (min-width: 600px) {
+    .c-socialwall__item {
+        flex:0 0 25%
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .c-socialwall__item {
+        flex:0 0 16.66666666%
+    }
+}
+
+.c-socialwall__item a {
+    display: inline-block;
+    width: 100%;
+    text-align: center
+}
+
+.c-socialwall__item img {
+    max-height: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    vertical-align: text-bottom
+}
+
+.c-socialwall__item p {
+    display: none
+}

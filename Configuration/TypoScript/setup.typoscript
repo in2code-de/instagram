@@ -1,0 +1,5 @@
+page {
+    includeCSS {
+        instagram = EXT:instagram/Resources/Public/Css/style.css
+    }
+}
