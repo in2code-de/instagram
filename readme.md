@@ -173,7 +173,10 @@ Example html:
 </html>
 ```
 
+### Styling
 
+If you want to have basic styling for the default layout present in the extension, you can include the
+static template "Instagram" on your page.
 
 ## Screenshots
 
@@ -248,25 +251,26 @@ In this case you have to remove all tokens (see CLI section above) and create ne
 
 ## Changelog
 
-| Version    | Date       | State      | Description      |
-| ---------- | ---------- | ---------- | ---------------- |
-| 7.0.0      | 2022-02-21 | Task       | Support TYPO3 10 and 11 now |
-| 6.2.1      | 2021-10-01 | Bugfix     | Prevent exception if image is a video |
-| 6.2.0      | 2021-07-09 | Feature    | Add comand that allows you to delete all existing tokens |
-| 6.1.3      | 2021-06-09 | Bugfix     | Use thumbnail images when storing local to allow video previews |
-| 6.1.2      | 2021-06-09 | Bugfix     | Don't convert UserId to float value |
-| 6.1.1      | 2021-06-09 | Task       | Harden middleware with code recognization |
-| 6.1.0      | 2021-04-13 | Task       | Fix problem "Field id specified more than once. This is only possible before version 2.1" - because of a change of the instagram interface |
-| 6.0.2      | 2021-03-17 | Task       | Add extension key to composer.json file, small documentation update |
-| 6.0.1      | 2021-03-15 | Bugfix     | Change int to string field type for userId and appId to also handle large numbers |
-| 6.0.0 !!!  | 2021-03-15 | Task       | Another rebuild now with the useage of the original Instagram API to grap images. See installation part in documentation what you have to do now. FlexForm, Scheduler and HTML-Templates have changed (this is a pitty, but have to be done). |
-| 5.1.0      | 2021-01-21 | Feature    | Render images in listview in webp format. |
-| 5.0.2      | 2020-12-23 | Bugfix     | Add a subject for error mails. |
-| 5.0.1      | 2020-11-27 | Bugfix     | Enable caching for the plugin. |
-| 5.0.0      | 2020-11-16 | Feature    | Pass a sessionid to instagram for blocked requests. Added a notification service for CURL errors. |
-| 4.0.1      | 2020-11-14 | Bugfix     | Fix typo in ext_tables.sql |
-| 4.0.0 !!!  | 2020-11-13 | Task       | Add a scheduler task to import feeds (without RSS feed now). A plugin allows you to push the images into the frontend |
-| 3.0.0 !!!  | 2020-06-05 | Task       | Use RSS-feed now for a workarround that server request are blocked by instagram |
-| 2.0.0      | 2020-05-08 | Task       | Store images locally now to improve privacy of your visitors. Use content element uid for building individual caches now |
-| 1.1.0      | 2020-04-29 | Task       | Open links in new tabs, don't cache the view because of own caching framework usage  |
-| 1.0.0      | 2020-04-29 | Task       | Initial release  |
+| Version   | Date       | State   | Description                                                                                                                                                                                                                                   |
+|-----------|------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 7.1.0     | 2022-09-22 | Feature | Add optional static file include for styling of default layout                                                                                                                                                                                |
+| 7.0.0     | 2022-02-21 | Task    | Support TYPO3 10 and 11 now                                                                                                                                                                                                                   |
+| 6.2.1     | 2021-10-01 | Bugfix  | Prevent exception if image is a video                                                                                                                                                                                                         |
+| 6.2.0     | 2021-07-09 | Feature | Add comand that allows you to delete all existing tokens                                                                                                                                                                                      |
+| 6.1.3     | 2021-06-09 | Bugfix  | Use thumbnail images when storing local to allow video previews                                                                                                                                                                               |
+| 6.1.2     | 2021-06-09 | Bugfix  | Don't convert UserId to float value                                                                                                                                                                                                           |
+| 6.1.1     | 2021-06-09 | Task    | Harden middleware with code recognization                                                                                                                                                                                                     |
+| 6.1.0     | 2021-04-13 | Task    | Fix problem "Field id specified more than once. This is only possible before version 2.1" - because of a change of the instagram interface                                                                                                    |
+| 6.0.2     | 2021-03-17 | Task    | Add extension key to composer.json file, small documentation update                                                                                                                                                                           |
+| 6.0.1     | 2021-03-15 | Bugfix  | Change int to string field type for userId and appId to also handle large numbers                                                                                                                                                             |
+| 6.0.0 !!! | 2021-03-15 | Task    | Another rebuild now with the useage of the original Instagram API to grap images. See installation part in documentation what you have to do now. FlexForm, Scheduler and HTML-Templates have changed (this is a pitty, but have to be done). |
+| 5.1.0     | 2021-01-21 | Feature | Render images in listview in webp format.                                                                                                                                                                                                     |
+| 5.0.2     | 2020-12-23 | Bugfix  | Add a subject for error mails.                                                                                                                                                                                                                |
+| 5.0.1     | 2020-11-27 | Bugfix  | Enable caching for the plugin.                                                                                                                                                                                                                |
+| 5.0.0     | 2020-11-16 | Feature | Pass a sessionid to instagram for blocked requests. Added a notification service for CURL errors.                                                                                                                                             |
+| 4.0.1     | 2020-11-14 | Bugfix  | Fix typo in ext_tables.sql                                                                                                                                                                                                                    |
+| 4.0.0 !!! | 2020-11-13 | Task    | Add a scheduler task to import feeds (without RSS feed now). A plugin allows you to push the images into the frontend                                                                                                                         |
+| 3.0.0 !!! | 2020-06-05 | Task    | Use RSS-feed now for a workarround that server request are blocked by instagram                                                                                                                                                               |
+| 2.0.0     | 2020-05-08 | Task    | Store images locally now to improve privacy of your visitors. Use content element uid for building individual caches now                                                                                                                      |
+| 1.1.0     | 2020-04-29 | Task    | Open links in new tabs, don't cache the view because of own caching framework usage                                                                                                                                                           |
+| 1.0.0     | 2020-04-29 | Task    | Initial release                                                                                                                                                                                                                               |
