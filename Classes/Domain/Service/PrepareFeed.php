@@ -66,11 +66,9 @@ class PrepareFeed
             FileUtility::createFolderIfNotExists($path);
 
             foreach ($feed['data'] as $item) {
-                if ($item['thumbnail_url'] || $item['media_url']) {
-                    $imageContent = $this->getImageContent($item['thumbnail_url'] ?? $item['media_url']);
-                    $pathAndName = GeneralUtility::getFileAbsFileName($this->imageFolder) . $item['id'] . '.jpg';
-                    GeneralUtility::writeFile($pathAndName, $imageContent, true);
-                }
+                $imageContent = $this->getImageContent($item['thumbnail_url'] ?? $item['media_url']);
+                $pathAndName = GeneralUtility::getFileAbsFileName($this->imageFolder) . $item['id'] . '.jpg';
+                GeneralUtility::writeFile($pathAndName, $imageContent, true);
             }
         }
         return $feed;
