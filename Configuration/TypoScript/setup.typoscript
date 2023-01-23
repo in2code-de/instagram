@@ -3,3 +3,13 @@ page {
         instagram = EXT:instagram/Resources/Public/Css/style.css
     }
 }
+
+plugin {
+    tx_instagram_pi1 {
+        view {
+            templateRootPaths {
+                0 = EXT:instagram/Resources/Private/Templates/
+            }
+        }
+    }
+}

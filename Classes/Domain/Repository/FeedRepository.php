@@ -20,7 +20,7 @@ class FeedRepository
     public function findDataByUsername(string $username): array
     {
         $queryBuilder = DatabaseUtility::getQueryBuilderForTable(self::TABLE_NAME);
-        $data = (string)$queryBuilder
+        $data = $queryBuilder
             ->select('data')
             ->from(self::TABLE_NAME)
             ->where(
@@ -28,10 +28,10 @@ class FeedRepository
             )
             ->setMaxResults(1)
             ->orderBy('uid', 'desc')
-            ->execute()
-            ->fetchColumn();
-        if (ArrayUtility::isJsonArray($data)) {
-            return json_decode($data, true);
+            ->executeQuery()
+            ->fetchFirstColumn();
+        if (ArrayUtility::isJsonArray($data[0])) {
+            return json_decode($data[0], true);
         }
         return [];
     }
@@ -59,7 +59,7 @@ class FeedRepository
             ->where(
                 $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($username))
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -77,6 +77,6 @@ class FeedRepository
                 'data' => json_encode($feed),
                 'import_date' => time()
             ])
-            ->execute();
+            ->executeStatement();
     }
 }

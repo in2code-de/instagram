@@ -41,7 +41,7 @@ class TokenRepository
                 'app_return_url' => $appReturnUrl,
                 'crdate' => time(),
             ])
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -58,16 +58,16 @@ class TokenRepository
     public function updateToken(string $username, string $token, int $expires, $userId = '0'): void
     {
         $queryBuilder = DatabaseUtility::getQueryBuilderForTable(self::TABLE_NAME);
-        $uid = (int)$queryBuilder
+        $uid = $queryBuilder
             ->select('uid')
             ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($username))
             )
             ->orderBy('crdate', 'desc')
-            ->execute()
-            ->fetchColumn();
-        if ($uid === 0) {
+            ->executeQuery()
+            ->fetchFirstColumn();
+        if (empty($uid)) {
             throw new ConfigurationException('No empty token record found that can be extended', 1615748471);
         }
 
@@ -79,7 +79,7 @@ class TokenRepository
             $properties += ['user_id' => $userId];
         }
         $connection = DatabaseUtility::getConnectionForTable(self::TABLE_NAME);
-        $connection->update(self::TABLE_NAME, $properties, ['uid' => (int)$uid]);
+        $connection->update(self::TABLE_NAME, $properties, ['uid' => (int)$uid[0]]);
     }
 
     /**
@@ -99,8 +99,8 @@ class TokenRepository
                 $queryBuilder->expr()->eq('expire_date', 0)
             )
             ->orderBy('crdate', 'desc')
-            ->execute()
-            ->fetch();
+            ->executeQuery()
+            ->fetchAssociative();
         if ($username === false) {
             throw new ConfigurationException('No empty token record found that can be filled', 1615750700);
         }
@@ -135,8 +135,8 @@ class TokenRepository
                 $queryBuilder->expr()->gt('expire_date', time())
             )
             ->orderBy('crdate', 'desc')
-            ->execute()
-            ->fetch();
+            ->executeQuery()
+            ->fetchAssociative();
         if ($token === false) {
             return [];
         }
@@ -157,7 +157,7 @@ class TokenRepository
             ->where(
                 $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($username))
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**
