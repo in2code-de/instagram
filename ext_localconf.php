@@ -1,6 +1,10 @@
 <?php
 
-if (!defined('TYPO3_MODE')) {
+use In2code\Instagram\Controller\ProfileController;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
@@ -9,18 +13,18 @@ call_user_func(
         /**
          * Include Frontend Plugins
          */
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'In2code.instagram',
+        ExtensionUtility::configurePlugin(
+            'Instagram',
             'Pi1',
-            [
-                In2code\Instagram\Controller\ProfileController::class => 'show'
-            ]
+            [ProfileController::class => 'show'],
+            [],
+            ExtensionUtility::PLUGIN_TYPE_PLUGIN
         );
 
         /**
          * Caching framework
          */
-        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['instagram'])) {
+        if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['instagram'])) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['instagram'] = [];
         }
 
@@ -36,7 +40,7 @@ call_user_func(
         /**
          * ContentElementWizard
          */
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+        ExtensionManagementUtility::addPageTSConfig(
             '@import "EXT:instagram/Configuration/TSConfig/ContentElementWizard.typoscript"'
         );
     }

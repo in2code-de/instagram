@@ -1,10 +1,10 @@
 <?php
-defined('TYPO3_MODE') || die();
+defined('TYPO3') || die();
 
 /**
  * Register Plugins
  */
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin('instagram', 'Pi1', 'Instagram');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin('Instagram', 'Pi1', 'Instagram');
 
 /**
  * Disable not needed fields in tt_content

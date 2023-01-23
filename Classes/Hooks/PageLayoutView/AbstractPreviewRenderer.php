@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace In2code\Instagram\Hooks\PageLayoutView;
 
 use In2code\Instagram\Exception\ConfigurationException;
+use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Service\FlexFormService;
@@ -13,7 +14,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Class AbstractPreviewRenderer
  */
-abstract class AbstractPreviewRenderer implements PageLayoutViewDrawItemHookInterface
+abstract class AbstractPreviewRenderer extends StandardContentPreviewRenderer
 {
     /**
      * @var array tt_content.*

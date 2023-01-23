@@ -16,6 +16,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class GetToken extends AbstractFormElement
 {
+
     /**
      * Note when a token is nearly expired - define the number of days
      *

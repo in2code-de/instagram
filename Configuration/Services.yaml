@@ -4,6 +4,10 @@ services:
     autoconfigure: true
     public: false
 
+  In2code\Instagram\:
+    resource: '../Classes/*'
+    exclude: '../Classes/{Domain/Model}'
+
   In2code\Instagram\Command\ImportFeedCommand:
     tags:
       - name: 'console.command'
