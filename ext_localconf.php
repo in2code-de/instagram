@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
@@ -10,10 +10,10 @@ call_user_func(
          * Include Frontend Plugins
          */
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'In2code.instagram',
+            'Instagram',
             'Pi1',
             [
-                In2code\Instagram\Controller\ProfileController::class => 'show'
+                \In2code\Instagram\Controller\ProfileController::class => 'show'
             ]
         );
 

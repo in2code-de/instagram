@@ -28,8 +28,8 @@ class FeedRepository
             )
             ->setMaxResults(1)
             ->orderBy('uid', 'desc')
-            ->execute()
-            ->fetchColumn();
+            ->executeQuery()
+            ->fetchOne();
         if (ArrayUtility::isJsonArray($data)) {
             return json_decode($data, true);
         }
@@ -59,7 +59,7 @@ class FeedRepository
             ->where(
                 $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($username))
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -77,6 +77,6 @@ class FeedRepository
                 'data' => json_encode($feed),
                 'import_date' => time()
             ])
-            ->execute();
+            ->executeStatement();
     }
 }

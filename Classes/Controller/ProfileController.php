@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
+
 namespace In2code\Instagram\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use In2code\Instagram\Domain\Repository\FeedRepository;
 use In2code\Instagram\Domain\Repository\TokenRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -32,16 +34,14 @@ class ProfileController extends ActionController
         $this->tokenRepository = $tokenRepository;
     }
 
-    /**
-     * @return void
-     */
-    public function showAction()
+    public function showAction(): ResponseInterface
     {
         $feed = $this->feedRepository->findDataByUsername((string)$this->settings['username']);
         $this->view->assignMultiple([
-            'data' => $this->configurationManager->getContentObject()->data,
+            'data' => $this->request->getAttribute('currentContentObject')->data,
             'feed' => $feed,
             'token' => $this->tokenRepository->findValidTokenByUsername((string)$this->settings['username'])
         ]);
+        return $this->htmlResponse();
     }
 }
