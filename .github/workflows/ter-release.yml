@@ -7,6 +7,7 @@ on:
 
 jobs:
   ter-release:
+    if: github.repository == 'in2code-de/instagram'
     name: TER release
     runs-on: ubuntu-latest
     env:
