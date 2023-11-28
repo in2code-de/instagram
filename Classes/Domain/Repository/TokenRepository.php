@@ -41,7 +41,7 @@ class TokenRepository
                 'app_return_url' => $appReturnUrl,
                 'crdate' => time(),
             ])
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -65,8 +65,8 @@ class TokenRepository
                 $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($username))
             )
             ->orderBy('crdate', 'desc')
-            ->execute()
-            ->fetchColumn();
+            ->executeQuery()
+            ->fetchOne();
         if ($uid === 0) {
             throw new ConfigurationException('No empty token record found that can be extended', 1615748471);
         }
@@ -99,8 +99,8 @@ class TokenRepository
                 $queryBuilder->expr()->eq('expire_date', 0)
             )
             ->orderBy('crdate', 'desc')
-            ->execute()
-            ->fetch();
+            ->executeQuery()
+            ->fetchAssociative();
         if ($username === false) {
             throw new ConfigurationException('No empty token record found that can be filled', 1615750700);
         }
@@ -135,8 +135,8 @@ class TokenRepository
                 $queryBuilder->expr()->gt('expire_date', time())
             )
             ->orderBy('crdate', 'desc')
-            ->execute()
-            ->fetch();
+            ->executeQuery()
+            ->fetchAssociative();
         if ($token === false) {
             return [];
         }
@@ -157,7 +157,7 @@ class TokenRepository
             ->where(
                 $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($username))
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**

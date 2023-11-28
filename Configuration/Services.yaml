@@ -4,6 +4,15 @@ services:
     autoconfigure: true
     public: false
 
+  In2code\Instagram\Controller\ProfileController:
+    public: true
+
+  In2code\Instagram\Domain\Repository\FeedRepository:
+    public: true
+
+  In2code\Instagram\Domain\Repository\TokenRepository:
+    public: true
+
   In2code\Instagram\Command\ImportFeedCommand:
     tags:
       - name: 'console.command'
