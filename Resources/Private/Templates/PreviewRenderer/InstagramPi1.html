@@ -11,9 +11,17 @@
 				<f:alias map="{images:'{instagram:backend.getFeed(flexForm:flexForm)}'}">
 					<f:if condition="{images.data -> f:count()} > 0">
 						<f:then>
+							<f:if condition="{settings.firstPost}">
+								<f:then>
+									<f:variable name="lastPost">{settings.firstPost + settings.limit - 1}</f:variable>
+								</f:then>
+								<f:else>
+									<f:variable name="lastPost">999999</f:variable>
+								</f:else>
+							</f:if>
 							<f:for each="{images.data}" as="image" iteration="iteration">
-								<f:if condition="{iteration.cycle} < 7">
-									<div class="col-md-2">
+								<f:if condition="{iteration.cycle} >= {flexForm.settings.firstPost} && {iteration.cycle} <= {lastPost} && {iteration.cycle} <= 8">
+									<div class="col-md-4">
 										<instagram:isLocalImageExisting id="{image.id}">
 											<f:then>
 												<f:image src="/typo3temp/assets/tx_instagram/{image.id}.jpg" alt="{image.caption}" width="500c" height="500c" />
