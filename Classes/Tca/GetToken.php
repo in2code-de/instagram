@@ -90,16 +90,12 @@ class GetToken extends AbstractFormElement
     }
 
     /**
-     * Like:
-     * "https://api.instagram.com/oauth/authorize
-     *      ?client_id=123&redirect_uri=https://abc.de/&scope=user_profile,user_media&response_type=code"
-     *
      * @return string
      */
     protected function getAuthenticationUrl(): string
     {
         $fields = ArrayUtility::cleanFlexFormArray($this->data['flexFormRowData']);
-        $url = 'https://api.instagram.com/oauth/authorize?scope=user_profile,user_media&response_type=code';
+        $url = 'https://www.instagram.com/oauth/authorize?scope=instagram_business_basic&response_type=code';
         if (!empty($fields['appId'])) {
             $url .= '&client_id=' . $fields['appId'];
         }
