@@ -32,22 +32,25 @@ below.
 
 ### The facebook and instagram part
 
-First of all, you should follow the official guidelines with step 1, 2 and 3 - see details at 
-https://developers.facebook.com/docs/instagram-basic-display-api/getting-started
+> [!NOTE]
+> * The Instagram API is only available for Instagram Business accounts. If you have a private account, you have to switch to a business account first.
+> * The Instagram account you want to access needs to be part of a developer Facebook account as well, otherwise it can't be added as tester to an application.
 
-* Step 1: You need a facebook developer user - see https://developers.facebook.com/apps
-* Step 2: Add a "facebook app" as described in the guidelines in step 1
-* Step 3: Configure "Instagram Basic Display" in the guidelines in step 2
-** Note: Simply use the homepage URL of your website for the "OAuth Redirect URIs" like `https://www.in2code.de/` (same for "Deauthorize Callback URL" and "Data Deletion Request Callback URL")
-** Note2: Make some notes for your new "App ID", "App secret" and the "Redirect URI" - this will be needed later in the FlexForm
-* Step 4: Add a instagram testuser as described in step 3 in the guidelines
-* Step 5: Install the extension (if not yet done)
-* Step 6: Add a Instagram plugin anywhere on your pages and open the edit view. Add "username", "App ID", "App secret" and "App return URL" and press "save"
-* Step 7: Now you will see a button at the end of the FlexForm. Click on it and a new browserwindow is opened with the Instagram website. You have to login and accept the request. After that, you will be redirected to your homepage.
-* Step 8: If you now reload the plugin, you will see a green message that tells you that you now have a valid token and how long the token is valid (no worry, ones you have created it, you can use a scheduler task to refresh it automatically)
-* Step 9: Now, you have access to the API and you can add a new scheduler task and import images from the given user (You should frequently import the feed - e.g. every 30 minutes)
-* Step 10: Once you have imported the images via scheduler, you can see the plugin output in the frontend with the given feed
-* Step 11: Don't forget to add an additional scheduler task to frequently refresh the token validation after 30-50 days, because the long-live token in Instagram expires after 60 days.
+1. You need a individual Facebook account
+2. Once you have a Facebook account, register as a developer at https://developers.facebook.com/
+3. Add a new application.
+4. Configure the integration ["Instagram API with Instagram Login"](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/)
+    * Configure "Instagram Business Login". As a OAuth Redirect URL just use the URL of your homepage (e.g. https://www.in2code.de)
+    * Make some notes for your new "App ID", "App secret" and the "Redirect URI" - this will be needed later in the FlexForm
+5. Under "Roles" add your Instagram account as a test account. _(see notes above)_
+    * You need to accept this on your Instagram account. Go to your Instagram account settings and then to "Apps and Websites" and add the new app as a tester.
+6. Install the extension (if not yet done)
+7. Add a Instagram plugin anywhere on your pages and open the edit view. Add "username", "App ID", "App secret" and "App return URL" and press "save"
+8. Now you will see a button at the end of the FlexForm. Click on it and a new browser window is opened with the Instagram website. You have to login and accept the request. After that, you will be redirected to your homepage.
+9. If you reload the plugin, you will see a green message that tells you that you now have a valid token and how long the token is valid (no worries, once you have created it, you can use a scheduler task to refresh it automatically)
+10. Now, you have access to the API and you can add a new scheduler task and import images from the given user (You should frequently import the feed - e.g. every 30 minutes)
+11. Once you have imported the images via scheduler, you can see the plugin output in the frontend with the given feed
+12. Don't forget to add an additional scheduler task to frequently refresh the token validation after 30-50 days, because the long-live token in Instagram expires after 60 days.
 
 
 ### CLI commands
