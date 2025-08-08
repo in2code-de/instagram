@@ -38,7 +38,6 @@ class ProfileController extends ActionController
     {
         $feed = $this->feedRepository->findDataByUsername((string)$this->settings['username']);
         $this->view->assignMultiple([
-            'data' => $this->request->getAttribute('currentContentObject')->data,
             'feed' => $feed,
             'token' => $this->tokenRepository->findValidTokenByUsername((string)$this->settings['username'])
         ]);
