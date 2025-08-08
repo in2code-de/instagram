@@ -145,6 +145,11 @@ class InstagramRepository
             throw new ApiConnectionException('Could not read the feed', 1615757725);
         }
         $result = json_decode($request->getBody()->getContents(), true);
+        foreach ($result['data'] as $key => $feedEntry) {
+            if (!isset($feedEntry['media_url'])) {
+                unset($result['data'][$key]);
+            }
+        }
         if (empty($result['data'][0]['id']) || empty($result['data'][0]['media_url'])
             || empty($result['data'][0]['permalink'])) {
             throw new ApiConnectionException('Result does not contain expected keys', 1615757825);
