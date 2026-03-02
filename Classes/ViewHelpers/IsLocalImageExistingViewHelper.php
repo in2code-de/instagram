@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace In2code\Instagram\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
@@ -26,11 +27,11 @@ class IsLocalImageExistingViewHelper extends AbstractConditionViewHelper
     }
 
     /**
-     * @param null $arguments
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
      * @return bool
-     * @throws \Exception
      */
-    protected static function evaluateCondition(?array $arguments = null): bool
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext): bool
     {
         $file = GeneralUtility::getFileAbsFileName(self::$imageFolder) . $arguments['id'] . '.jpg';
         return is_file($file);
